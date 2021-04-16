@@ -1,11 +1,50 @@
 #include "sprites.h"
 #define INPUT                      (KEY_MASK & (~REG_KEYS))
+/*
+#define SCREEN_WIDTH         240
+#define SCREEN_HEIGHT        160
+*/
+int userX = 10;
+int userY = 90;
+int enemyX = 220;
+int enemyY = 90;
 
-int enemyX = 160;
-int enemyY = 72;
-
-int userX = 40;
-int userY = 72;
+void checkbutton(void)
+{
+	// Gift function to show you how a function that can be called upon button interrupt 
+    // to detect which button was pressed and run a specific function for each button could
+    // look like. You would have to define each buttonA/buttonB/... function yourself.
+    u16 buttons = INPUT;
+    
+    if ((buttons & KEY_A) == KEY_A)
+    {
+    }
+    if ((buttons & KEY_B) == KEY_B)
+    {
+    }
+    if ((buttons & KEY_SELECT) == KEY_SELECT)
+    {
+    }
+    if ((buttons & KEY_START) == KEY_START)
+    {
+    }
+    if ((buttons & KEY_RIGHT) == KEY_RIGHT)
+    {
+        buttonR();
+    }
+    if ((buttons & KEY_LEFT) == KEY_LEFT)
+    {
+        buttonL();
+    }
+    if ((buttons & KEY_UP) == KEY_UP)
+    {
+        buttonU();
+    }
+    if ((buttons & KEY_DOWN) == KEY_DOWN)
+    {
+        buttonD();
+    }
+}
 
 void buttonR(void) //move right
 {    
@@ -41,43 +80,6 @@ void buttonD(void) //move down
         userY -= 1;       
      } 
      return userY;
-}
-
-void checkbutton(void)
-{
-    // Gift function to show you how a function that can be called upon button interrupt 
-    // to detect which button was pressed and run a specific function for each button could
-    // look like. You would have to define each buttonA/buttonB/... function yourself.
-    u16 buttons = INPUT;
-    
-    if ((buttons & KEY_A) == KEY_A)
-    {
-    }
-    if ((buttons & KEY_B) == KEY_B)
-    {
-    }
-    if ((buttons & KEY_SELECT) == KEY_SELECT)
-    {
-    }
-    if ((buttons & KEY_START) == KEY_START)
-    {
-    }
-    if ((buttons & KEY_RIGHT) == KEY_RIGHT)
-    {
-        buttonR();
-    }
-    if ((buttons & KEY_LEFT) == KEY_LEFT)
-    {
-        buttonL();
-    }
-    if ((buttons & KEY_UP) == KEY_UP)
-    {
-        buttonU();
-    }
-    if ((buttons & KEY_DOWN) == KEY_DOWN)
-    {
-        buttonD();
-    }
 }
 
 void fillPalette(void)
@@ -135,4 +137,3 @@ void drawLaser(void)
             break;
     }
 }
-*/
