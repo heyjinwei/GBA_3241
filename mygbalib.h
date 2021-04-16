@@ -1,49 +1,85 @@
 #include "sprites.h"
 #define INPUT                      (KEY_MASK & (~REG_KEYS))
 
-int x_pos = 10;
-int y_pos = 90;
+int enemyX = 160;
+int enemyY = 72;
+
+int userX = 40;
+int userY = 72;
+
+void buttonR(void) //move right
+{    
+     userX += 1;
+     if (userX > 104) { //if you try to move the spaceship pass the middle,
+        userX -= 16;       
+     } 
+     return userX;
+}
+
+void buttonL(void) //move left
+{
+    userX -= 1;
+    if (userX < 0) { //if you try to move the spaceship out of the screen this prevents it
+        userX += 16;
+    }
+    return userX; 
+}
+
+void buttonU(void) //move up
+{
+     userY -= 1;
+     if (userY < 0) { //if you try to move the spaceship out of the screen this prevents it
+        userY += 16;       
+     } 
+     return userY;
+}
+
+void buttonD(void) //move down
+{
+     userY += 1;
+     if (userY > 144) { //if you try to move the spaceship out of the screen this prevents it
+        userY -= 16;       
+     } 
+     return userY;
+}
 
 void checkbutton(void)
 {
-	// Gift function to show you how a function that can be called upon button interrupt 
+    // Gift function to show you how a function that can be called upon button interrupt 
     // to detect which button was pressed and run a specific function for each button could
     // look like. You would have to define each buttonA/buttonB/... function yourself.
     u16 buttons = INPUT;
     
     if ((buttons & KEY_A) == KEY_A)
     {
-        y_pos += 10;
     }
     if ((buttons & KEY_B) == KEY_B)
     {
-        y_pos += 10;
     }
     if ((buttons & KEY_SELECT) == KEY_SELECT)
     {
-        y_pos += 10;
     }
     if ((buttons & KEY_START) == KEY_START)
     {
-        y_pos += 10;
     }
     if ((buttons & KEY_RIGHT) == KEY_RIGHT)
     {
-        y_pos += 10;
+        buttonR();
     }
     if ((buttons & KEY_LEFT) == KEY_LEFT)
     {
-        y_pos += 10;
+        buttonL();
     }
     if ((buttons & KEY_UP) == KEY_UP)
     {
-        y_pos += 10;
+        buttonU();
     }
     if ((buttons & KEY_DOWN) == KEY_DOWN)
     {
-        y_pos += 10;
+        buttonD();
     }
 }
+
 
 void fillPalette(void)
 {
