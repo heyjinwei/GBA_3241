@@ -40,12 +40,12 @@ int main(void)
 	ham_Init();
 	int i;
 	// Set background mode
-	ham_SetBgMode(0);
+	ham_SetBgMode(2);
 
 	//ham_LoadBGPal((void*)bg_Palette, 256);
 
 	// Initialize built-in Text-System
-	ham_InitText(0);
+	// ham_InitText(0);
 
 	// Draw some text
 	/*
@@ -63,7 +63,7 @@ int main(void)
     REG_IME = 0x1;		// Enable interrupt handling
     // Set Timer Mode (fill that section and replace TMX with selected timer number)
     REG_TM0D =	0;		// TODO: complete this line to set timer initial value
-    //REG_TM0CNT |= TIMER_FREQUENCY_256 | TIMER_ENABLE;		// TODO: complete this line to set timer frequency and enable timer
+    //REG_TM0CNT |= TIMER_FREQUENCY_256 | TIMER_ENABLE | TIMER_INTERRUPTS;		// TODO: complete this line to set timer frequency and enable timer
 
 	// Infinite loop
 	for(;;);
