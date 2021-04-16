@@ -51,7 +51,8 @@ void checkbutton(void)
 
 void buttonS(void)
 {
-    if (gameState == 0){
+    if (gameState == 0)
+    {
         gameState = 1;
         delMenu();
     }
@@ -71,6 +72,7 @@ void buttonL(void) //move left
     if (gameState == 1 ){
         if (userX > 0) { //move left if not out of screen
             userX -= 1;
+       }
     }
 }
 
@@ -127,10 +129,12 @@ void drawSprite(int numb, int N, int x, int y)
 
 void drawMenu(void)
 {
-    if (gameState==0)
+    if (gameState==0){
         drawSprite(25, 30, 100,120);
         drawSprite(26, 31, 116,120);
         drawSprite(27, 32, 132,120);
+    }
+        
 }
 
 void delMenu(void)
