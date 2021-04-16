@@ -11,7 +11,7 @@ void buttonR(void) //move right
 {    
      userX += 1;
      if (userX > 104) { //if you try to move the man pass the middle,
-        userX -= 16;       
+        userX -= 1;       
      } 
      return userX;
 }
@@ -20,7 +20,7 @@ void buttonL(void) //move left
 {
     userX -= 1;
     if (userX < 0) { //if you try to move the man out of the screen this prevents it
-        userX += 16;
+        userX += 1;
     }
     return userX; 
 }
@@ -29,7 +29,7 @@ void buttonU(void) //move up
 {
      userY -= 1;
      if (userY < 0) { //if you try to move the man out of the screen this prevents it
-        userY += 16;       
+        userY += 1;       
      } 
      return userY;
 }
@@ -38,7 +38,7 @@ void buttonD(void) //move down
 {
      userY += 1;
      if (userY > 144) { //if you try to move the man out of the screen this prevents it
-        userY -= 16;       
+        userY -= 1;       
      } 
      return userY;
 }
