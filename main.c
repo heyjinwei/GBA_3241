@@ -4,8 +4,12 @@
 #include "mygbalib.h"
 #include <mygba.h>
 
+int i;
+
 int level = 1;
 bool isMovingUp = 0;
+int userHealth = 1;
+int enemyHealth = 7;
 
 void moveEnemy(void) 
 {
@@ -14,15 +18,35 @@ void moveEnemy(void)
         if (enemyY < 144 && !isMovingUp) { //if you try to move the man out of the screen this prevents it
             enemyY += 1;       
         }
-        if (enemyY > 0 && isMovingUp) { //if you try to move the man out of the screen this prevents it
+        if (enemyY > 16 && isMovingUp) { //if you try to move the man out of the screen this prevents it
             enemyY -= 1;       
         }
-        if (enemyY >= 144 || enemyY <= 0) {
+        if (enemyY >= 144 || enemyY <= 16) {
             isMovingUp = !isMovingUp;
         }
     }
 }
 
+void showHealthBar(void)
+{
+    drawSprite(6, 6, 112, 0); // draw health bar separato
+    for (i=1; i <= userHealth; i++)
+    {
+        drawSprite(4, 6 + i, 112 - (i * 16), 0);
+    }
+    for( ; i <= 7; i++) 
+    {
+        drawSprite(7, 6 + i, 112 - (i * 16), 0);
+    }
+    for (i=1; i <= enemyHealth; i++)
+    {
+        drawSprite(5, 13 + i, 112 + (i * 16), 0);
+    }
+    for( ; i <= 7; i++) 
+    {
+        drawSprite(7, 13 + i, 112 - (i * 16), 0);
+    }
+}
 
 void Handler(void)
 {
@@ -35,6 +59,7 @@ void Handler(void)
         drawSprite(1, 3, enemyX, enemyY);
         drawSprite(2, 4, 120, 40); //draw friendly rocket
         drawSprite(3, 5, 120, 120); //draw enemy rocket
+        showHealthBar();
     }
     if ((REG_IF & INT_TIMER1) == INT_TIMER1) 
     {
