@@ -1,12 +1,51 @@
 #include "sprites.h"
 #define INPUT                      (KEY_MASK & (~REG_KEYS))
 
-int userX = 10;
-int userY = 70;
+int enemyX = 160;
+int enemyY = 72;
+
+int userX = 40;
+int userY = 72;
+
+void buttonR(void) //move right
+{    
+     userX += 1;
+     if (userX > 104) { //if you try to move the man pass the middle,
+        userX -= 16;       
+     } 
+     return userX;
+}
+
+void buttonL(void) //move left
+{
+    userX -= 1;
+    if (userX < 0) { //if you try to move the man out of the screen this prevents it
+        userX += 16;
+    }
+    return userX; 
+}
+
+void buttonU(void) //move up
+{
+     userY -= 1;
+     if (userY < 0) { //if you try to move the man out of the screen this prevents it
+        userY += 16;       
+     } 
+     return userY;
+}
+
+void buttonD(void) //move down
+{
+     userY += 1;
+     if (userY > 144) { //if you try to move the man out of the screen this prevents it
+        userY -= 16;       
+     } 
+     return userY;
+}
 
 void checkbutton(void)
 {
-	// Gift function to show you how a function that can be called upon button interrupt 
+    // Gift function to show you how a function that can be called upon button interrupt 
     // to detect which button was pressed and run a specific function for each button could
     // look like. You would have to define each buttonA/buttonB/... function yourself.
     u16 buttons = INPUT;
@@ -41,25 +80,6 @@ void checkbutton(void)
     }
 }
 
-void buttonR(void)
-{
-    userX += 5;
-}
-
-void buttonL(void)
-{
-    userX -= 5;
-}
-
-void buttonU(void)
-{
-    userY -= 5;
-}
-
-void buttonD(void)
-{
-    userY += 5;
-}
 void fillPalette(void)
 {
     int     i;
