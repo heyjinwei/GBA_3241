@@ -11,7 +11,8 @@ void Handler(void)
 
     if ((REG_IF & INT_TIMER0) == INT_TIMER0) // TODO: replace XXX with the specific interrupt you are handling
     {
-        drawSprite(1, 2, userX, userY);
+        drawSprite(2, 1, userX, userY);
+        drawSprite(1, 2, enemyX, enemyY);
     }
     if ((REG_IF & INT_TIMER1) == INT_TIMER1) 
     {

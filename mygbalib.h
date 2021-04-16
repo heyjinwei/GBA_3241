@@ -1,8 +1,13 @@
 #include "sprites.h"
 #define INPUT                      (KEY_MASK & (~REG_KEYS))
-
+/*
+#define SCREEN_WIDTH         240
+#define SCREEN_HEIGHT        160
+*/
 int userX = 10;
-int userY = 70;
+int userY = 90;
+int enemyX = 220;
+int enemyY = 90;
 
 void checkbutton(void)
 {
@@ -43,6 +48,7 @@ void checkbutton(void)
 
 void buttonR(void)
 {
+    if (userX < SCREEN_WIDTH)
     userX += 5;
 }
 
