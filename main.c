@@ -4,6 +4,25 @@
 #include "mygbalib.h"
 #include <mygba.h>
 
+int level = 1;
+bool isMovingUp = 0;
+
+void moveEnemy(void) 
+{
+    if (level == 1) 
+    {
+        if (enemyY < 144 && !isMovingUp) { //if you try to move the man out of the screen this prevents it
+            enemyY += 1;       
+        }
+        if (enemyY > 0 && isMovingUp) { //if you try to move the man out of the screen this prevents it
+            enemyY -= 1;       
+        }
+        if (enemyY >= 144 || enemyY <= 0) {
+            isMovingUp = !isMovingUp;
+        }
+    }
+}
+
 
 void Handler(void)
 {
@@ -11,8 +30,9 @@ void Handler(void)
 
     if ((REG_IF & INT_TIMER0) == INT_TIMER0) // TODO: replace XXX with the specific interrupt you are handling
     {
-        drawSprite(2, 1, userX, userY);
-        drawSprite(1, 2, enemyX, enemyY);
+        moveEnemy();
+        drawSprite(0, 2, userX, userY);
+        drawSprite(1, 3, enemyX, enemyY);
     }
     if ((REG_IF & INT_TIMER1) == INT_TIMER1) 
     {
@@ -120,4 +140,3 @@ int main(void)
 
 	return 0;
 }
-*/

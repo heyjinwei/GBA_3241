@@ -46,26 +46,42 @@ void checkbutton(void)
     }
 }
 
-void buttonR(void)
-{
-    if (userX < SCREEN_WIDTH)
-    userX += 5;
+void buttonR(void) //move right
+{    
+     userX += 1;
+     if (userX > 104) { //if you try to move the man pass the middle,
+        userX -= 1;       
+     } 
+     return userX;
 }
 
-void buttonL(void)
+void buttonL(void) //move left
 {
-    userX -= 5;
+    userX -= 1;
+    if (userX < 0) { //if you try to move the man out of the screen this prevents it
+        userX += 1;
+    }
+    return userX; 
 }
 
-void buttonU(void)
+void buttonU(void) //move up
 {
-    userY -= 5;
+     userY -= 1;
+     if (userY < 0) { //if you try to move the man out of the screen this prevents it
+        userY += 1;       
+     } 
+     return userY;
 }
 
-void buttonD(void)
+void buttonD(void) //move down
 {
-    userY += 5;
+     userY += 1;
+     if (userY > 144) { //if you try to move the man out of the screen this prevents it
+        userY -= 1;       
+     } 
+     return userY;
 }
+
 void fillPalette(void)
 {
     int     i;
@@ -121,4 +137,3 @@ void drawLaser(void)
             break;
     }
 }
-*/
