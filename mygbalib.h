@@ -1,8 +1,8 @@
 #include "sprites.h"
 #define INPUT                      (KEY_MASK & (~REG_KEYS))
 
-int x_pos = 10;
-int y_pos = 90;
+int userX = 10;
+int userY = 70;
 
 void checkbutton(void)
 {
@@ -13,38 +13,53 @@ void checkbutton(void)
     
     if ((buttons & KEY_A) == KEY_A)
     {
-        y_pos += 10;
     }
     if ((buttons & KEY_B) == KEY_B)
     {
-        y_pos += 10;
     }
     if ((buttons & KEY_SELECT) == KEY_SELECT)
     {
-        y_pos += 10;
     }
     if ((buttons & KEY_START) == KEY_START)
     {
-        y_pos += 10;
     }
     if ((buttons & KEY_RIGHT) == KEY_RIGHT)
     {
-        y_pos += 10;
+        buttonR();
     }
     if ((buttons & KEY_LEFT) == KEY_LEFT)
     {
-        y_pos += 10;
+        buttonL();
     }
     if ((buttons & KEY_UP) == KEY_UP)
     {
-        y_pos += 10;
+        buttonU();
     }
     if ((buttons & KEY_DOWN) == KEY_DOWN)
     {
-        y_pos += 10;
+        buttonD();
     }
 }
 
+void buttonR(void)
+{
+    userX += 5;
+}
+
+void buttonL(void)
+{
+    userX -= 5;
+}
+
+void buttonU(void)
+{
+    userY -= 5;
+}
+
+void buttonD(void)
+{
+    userY += 5;
+}
 void fillPalette(void)
 {
     int     i;
