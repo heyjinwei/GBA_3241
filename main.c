@@ -108,35 +108,3 @@ int main(void)
 	
 	return 0;
 }
-
-
-/*
-int main(void)
-{
-	int i;
-	
-    // Set Mode 2
-    *(unsigned short *) 0x4000000 = 0x40 | 0x2 | 0x1000;
-
-    // Fill SpritePal
-    *(unsigned short *) 0x5000200 = 0;
-    *(unsigned short *) 0x5000202 = RGB(31,31,31);
-
-    // Fill SpriteData
-    for (i = 0; i < 10*8*8/2; i++)
-        spriteData[i] = (numbers[i*2+1] << 8) + numbers[i*2];
-    for (i = 0; i < 129; i++)
-    	drawSprite(0, i, 240, 160);
-	// Set Handler Function for interrupts and enable selected interrupts
-    REG_INT = (int)&Handler;
-    REG_IE |= REG_TM0CNT; 				// TODO: complete this line to choose which timer interrupts to enable
-    REG_IME = 0x1;		// Enable interrupt handling
-
-    // Set Timer Mode (fill that section and replace TMX with selected timer number)
-    REG_TM0D =	30000;		// TODO: complete this line to set timer initial value
-    REG_TM0CNT |= TIMER_FREQUENCY_256 | TIMER_ENABLE;;		// TODO: complete this line to set timer frequency and enable timer
-
-    while(1);
-
-	return 0;
-}
