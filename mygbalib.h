@@ -66,6 +66,7 @@ void drawSprite(int numb, int N, int x, int y)
     *(unsigned short *)(0x7000002 + 8*N) = x | 0x4000;
     *(unsigned short *)(0x7000004 + 8*N) = numb*8;
 }
+
 /*
 void drawLaser(void)
 {
