@@ -4,6 +4,7 @@
 #define SCREEN_WIDTH         240
 #define SCREEN_HEIGHT        160
 */
+
 int userX = 10;
 int userY = 90;
 int enemyX = 220;
@@ -59,45 +60,35 @@ void buttonS(void)
 void buttonR(void) //move right
 {   
     if (gameState == 1 ){
-        userX += 1;
-        if (userX > 104) { //if you try to move the man pass the middle,
-           userX -= 1;       
-        } 
-        return userX;
+        if (userX < 104) { //move right if not in middle
+            userX += 1;
+        }
     }
-    
 }
 
 void buttonL(void) //move left
 {
     if (gameState == 1 ){
-        userX -= 1;
-        if (userX < 0) { //if you try to move the man out of the screen this prevents it
-            userX += 1;
-        }
-        return userX;
+        if (userX > 0) { //move left if not out of screen
+            userX -= 1;
     }
 }
 
 void buttonU(void) //move up
 {
     if (gameState == 1 ){
-        userY -= 1;
-        if (userY < 0) { //if you try to move the man out of the screen this prevents it
-            userY += 1;       
+        if (userY > 16) { //move up if below max height
+            userY -= 1;      
         } 
-        return userY;
     }
 }
 
 void buttonD(void) //move down
 {
     if (gameState == 1 ){
-        userY += 1;
-        if (userY > 144) { //if you try to move the man out of the screen this prevents it
-            userY -= 1;       
+        if (userY < 144) { //move down if above minimum height
+            userY += 1;      
         } 
- return userY;
     }
 }
 
