@@ -11,7 +11,7 @@ void Handler(void)
     if ((REG_IF & INT_TIMER0) == INT_TIMER0) // TODO: replace XXX with the specific interrupt you are handling
     {
         // TODO: Handle timer interrupt here
-        ham_DrawText(10, 1, "SNAKEE");
+        ham_DrawText(1, 1, "Shootout Showdown");
     }
     /*
     if ((REG_IF & XXX) == xxx) 
@@ -56,6 +56,7 @@ int main(void)
 	fillPalette();
 	fillSprites();
 	drawSprite(0, 1, 40, 40);
+    drawSprite(1, 2, 160, 40);
 	// Set Handler Function for interrupts and enable selected interrupts
 	REG_IME = 0x0;
     REG_INT = (u32)Handler;
