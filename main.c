@@ -33,6 +33,8 @@ void Handler(void)
         moveEnemy();
         drawSprite(0, 2, userX, userY);
         drawSprite(1, 3, enemyX, enemyY);
+        drawSprite(2, 4, 120, 40); //draw friendly rocket
+        drawSprite(3, 5, 120, 120); //draw enemy rocket
     }
     if ((REG_IF & INT_TIMER1) == INT_TIMER1) 
     {
