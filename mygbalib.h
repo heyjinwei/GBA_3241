@@ -1,6 +1,9 @@
 #include "sprites.h"
 #define INPUT                      (KEY_MASK & (~REG_KEYS))
 
+int x_pos = 10;
+int y_pos = 90;
+
 void checkbutton(void)
 {
 	// Gift function to show you how a function that can be called upon button interrupt 
@@ -10,30 +13,37 @@ void checkbutton(void)
     
     if ((buttons & KEY_A) == KEY_A)
     {
+        y_pos += 10;
     }
     if ((buttons & KEY_B) == KEY_B)
     {
+        y_pos += 10;
     }
     if ((buttons & KEY_SELECT) == KEY_SELECT)
     {
+        y_pos += 10;
     }
     if ((buttons & KEY_START) == KEY_START)
     {
+        y_pos += 10;
     }
     if ((buttons & KEY_RIGHT) == KEY_RIGHT)
     {
+        y_pos += 10;
     }
     if ((buttons & KEY_LEFT) == KEY_LEFT)
     {
+        y_pos += 10;
     }
     if ((buttons & KEY_UP) == KEY_UP)
     {
+        y_pos += 10;
     }
     if ((buttons & KEY_DOWN) == KEY_DOWN)
     {
+        y_pos += 10;
     }
 }
-
 
 void fillPalette(void)
 {
