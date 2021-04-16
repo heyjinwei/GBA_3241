@@ -27,6 +27,14 @@ void moveEnemy(void)
     }
 }
 
+void menuHandler(void)
+{
+    if (gameState == 0){
+        drawMenu();
+        checkbutton();
+    }
+}
+
 void showHealthBar(void)
 {
     drawSprite(6, 6, 112, 0); // draw health bar separato
@@ -52,9 +60,15 @@ void Handler(void)
 {
     REG_IME = 0x0; // Stop all other interrupt handling, while we handle this current one
 
+    if ((REG_IF & INT_TIMER2) == INT_TIMER2)
+    {
+        menuHandler();              
+    }
+    
     if ((REG_IF & INT_TIMER0) == INT_TIMER0) // TODO: replace XXX with the specific interrupt you are handling
     {
         moveEnemy();
+        checkbutton();
         drawSprite(0, 2, userX, userY);
         drawSprite(1, 3, enemyX, enemyY);
         drawSprite(2, 4, 120, 40); //draw friendly rocket
@@ -63,15 +77,9 @@ void Handler(void)
     }
     if ((REG_IF & INT_TIMER1) == INT_TIMER1) 
     {
-    	checkbutton();
-    }
-    /*
-    if ((REG_IF & XXX) == XXX)
-    {
         
-                
     }
-	*/
+	
 
     
     REG_IF = REG_IF; // Update interrupt table, to confirm we have handled this interrupt
@@ -100,14 +108,16 @@ int main(void)
 	for (i = 0; i < 10; i++)
 		ham_DrawText(4, i, "SNAKEE");
 	*/
+
 	fillPalette();
 	fillSprites();
+
 	//drawSprite(0, 1, 40, 40);
     //drawSprite(1, 2, 160, 40);
 	// Set Handler Function for interrupts and enable selected interrupts
 	// REG_IME = 0x0;
     REG_INT = (int)&Handler;
-    REG_IE  = INT_TIMER0 | INT_TIMER1;
+    REG_IE  = INT_TIMER0 | INT_TIMER1 | INT_TIMER2;
     REG_IME = 0x1;		// Enable interrupt handling
     
     // Set Timer Mode (fill that section and replace TMX with selected timer number)
@@ -119,15 +129,22 @@ int main(void)
 	clock 4: 61.025 microsec
     */
 
+    // Check start (115 times/second)
+    // 3.8 microsecond per check (2304 step for clock2)
+    REG_TM2D =  53261;      
+    REG_TM2CNT = TIMER_FREQUENCY_256 | TIMER_ENABLE | TIMER_INTERRUPTS;
+
     // 60 FPS game
     // 16,666 microsecond per frame (273 step for clock4)
     REG_TM0D =	65261;		
-    REG_TM0CNT = TIMER_FREQUENCY_1024 | TIMER_ENABLE | TIMER_INTERRUPTS;
+    REG_TM0CNT = TIMER_FREQUENCY_1024 | TIMER_ENABLE| TIMER_INTERRUPTS;// | TIMER_INTERRUPTS;
 
 	// Check button (115 times/second)
     // 3.8 microsecond per check (2304 step for clock2)
     REG_TM1D =	63261;		
-    REG_TM1CNT = TIMER_FREQUENCY_256 | TIMER_ENABLE | TIMER_INTERRUPTS;
+    REG_TM1CNT = TIMER_FREQUENCY_256 | TIMER_ENABLE| TIMER_INTERRUPTS;// | TIMER_INTERRUPTS;
+
+
 
 
 	// Infinite loop

@@ -9,6 +9,7 @@ int userX = 10;
 int userY = 90;
 int enemyX = 220;
 int enemyY = 90;
+int gameState = 0;
 
 void checkbutton(void)
 {
@@ -28,6 +29,7 @@ void checkbutton(void)
     }
     if ((buttons & KEY_START) == KEY_START)
     {
+        buttonS();
     }
     if ((buttons & KEY_RIGHT) == KEY_RIGHT)
     {
@@ -47,36 +49,47 @@ void checkbutton(void)
     }
 }
 
-void buttonR(void) //move right
-{    
-    if (userX < 104) { //move right if not in middle
-        userX += 1;
+void buttonS(void)
+{
+    if (gameState == 0){
+        gameState = 1;
+        delMenu();
     }
-     return userX;
+}
+
+void buttonR(void) //move right
+{   
+    if (gameState == 1 ){
+        if (userX < 104) { //move right if not in middle
+            userX += 1;
+        }
+    }
 }
 
 void buttonL(void) //move left
 {
-    if (userX > 0) { //move left if not out of screen
-        userX -= 1;
+    if (gameState == 1 ){
+        if (userX > 0) { //move left if not out of screen
+            userX -= 1;
     }
-    return userX; 
 }
 
 void buttonU(void) //move up
 {
-     if (userY > 16) { //move up if below max height
-        userY -= 1;      
-     } 
-     return userY;
+    if (gameState == 1 ){
+        if (userY > 16) { //move up if below max height
+            userY -= 1;      
+        } 
+    }
 }
 
 void buttonD(void) //move down
 {
-     if (userY < 144) { //move down if above minimum height
-        userY += 1;      
-     } 
-     return userY;
+    if (gameState == 1 ){
+        if (userY < 144) { //move down if above minimum height
+            userY += 1;      
+        } 
+    }
 }
 
 void fillPalette(void)
@@ -109,6 +122,22 @@ void drawSprite(int numb, int N, int x, int y)
     *(unsigned short *)(0x7000000 + 8*N) = y | 0x2000;
     *(unsigned short *)(0x7000002 + 8*N) = x | 0x4000;
     *(unsigned short *)(0x7000004 + 8*N) = numb*8;
+}
+
+
+void drawMenu(void)
+{
+    if (gameState==0)
+        drawSprite(25, 30, 100,120);
+        drawSprite(26, 31, 116,120);
+        drawSprite(27, 32, 132,120);
+}
+
+void delMenu(void)
+{
+    drawSprite(25, 30, 240,160);
+    drawSprite(26, 31, 240,160);
+    drawSprite(27, 32, 240,160);
 }
 
 /*
