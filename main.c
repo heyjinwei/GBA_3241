@@ -11,10 +11,7 @@ void Handler(void)
 
     if ((REG_IF & INT_TIMER0) == INT_TIMER0) // TODO: replace XXX with the specific interrupt you are handling
     {
-        // TODO: Handle timer interrupt here
-        // ham_DrawText(1, 1, "Shootout Showdown");
-        drawSprite(1, 2, x_pos, y_pos);
-        x_pos+=10;
+        drawSprite(1, 2, userX, userY);
     }
     if ((REG_IF & INT_TIMER1) == INT_TIMER1) 
     {
@@ -76,13 +73,13 @@ int main(void)
 
     // 60 FPS game
     // 16,666 microsecond per frame (273 step for clock4)
-    REG_TM0D =	25261;		
+    REG_TM0D =	65261;		
     REG_TM0CNT = TIMER_FREQUENCY_1024 | TIMER_ENABLE | TIMER_INTERRUPTS;
 
-	// Check button (60 times/second)
-    // 16,666 microsecond per frame (273 step for clock4)
-    REG_TM1D =	55261;		
-    REG_TM1CNT = TIMER_FREQUENCY_1024 | TIMER_ENABLE | TIMER_INTERRUPTS;
+	// Check button (115 times/second)
+    // 3.8 microsecond per check (2304 step for clock2)
+    REG_TM1D =	63261;		
+    REG_TM1CNT = TIMER_FREQUENCY_256 | TIMER_ENABLE | TIMER_INTERRUPTS;
 
 
 	// Infinite loop
