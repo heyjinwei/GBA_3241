@@ -5,12 +5,21 @@
 #include <mygba.h>
 
 int level = 1;
+bool isMovingUp = 0;
 
 void moveEnemy(void) 
 {
     if (level == 1) 
     {
-
+        if (enemyY < 144 && !isMovingUp) { //if you try to move the man out of the screen this prevents it
+            enemyY += 1;       
+        }
+        if (enemyY > 0 && isMovingUp) { //if you try to move the man out of the screen this prevents it
+            enemyY -= 1;       
+        }
+        if (enemyY >= 144 || enemyY <= 0) {
+            isMovingUp = !isMovingUp;
+        }
     }
 }
 
