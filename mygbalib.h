@@ -10,7 +10,7 @@ int userY = 72;
 void buttonR(void) //move right
 {    
      userX += 1;
-     if (userX > 104) { //if you try to move the spaceship pass the middle,
+     if (userX > 104) { //if you try to move the man pass the middle,
         userX -= 16;       
      } 
      return userX;
@@ -19,7 +19,7 @@ void buttonR(void) //move right
 void buttonL(void) //move left
 {
     userX -= 1;
-    if (userX < 0) { //if you try to move the spaceship out of the screen this prevents it
+    if (userX < 0) { //if you try to move the man out of the screen this prevents it
         userX += 16;
     }
     return userX; 
@@ -28,7 +28,7 @@ void buttonL(void) //move left
 void buttonU(void) //move up
 {
      userY -= 1;
-     if (userY < 0) { //if you try to move the spaceship out of the screen this prevents it
+     if (userY < 0) { //if you try to move the man out of the screen this prevents it
         userY += 16;       
      } 
      return userY;
@@ -37,7 +37,7 @@ void buttonU(void) //move up
 void buttonD(void) //move down
 {
      userY += 1;
-     if (userY > 144) { //if you try to move the spaceship out of the screen this prevents it
+     if (userY > 144) { //if you try to move the man out of the screen this prevents it
         userY -= 16;       
      } 
      return userY;
@@ -79,7 +79,6 @@ void checkbutton(void)
         buttonD();
     }
 }
-
 
 void fillPalette(void)
 {

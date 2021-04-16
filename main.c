@@ -87,14 +87,14 @@ int main(void)
 
     // 60 FPS game
     // 16,666 microsecond per frame (273 step for clock4)
-    REG_TM0D =	25261;		
-    REG_TM0CNT = TIMER_FREQUENCY_64 | TIMER_ENABLE | TIMER_INTERRUPTS;
 
-	// Check button (60 times/second)
-    // 16,666 microsecond per frame (273 step for clock4)
-    REG_TM1D =	55261;		
-    REG_TM1CNT = TIMER_FREQUENCY_64 | TIMER_ENABLE | TIMER_INTERRUPTS;
+    REG_TM0D =	65261;		
+    REG_TM0CNT = TIMER_FREQUENCY_1024 | TIMER_ENABLE | TIMER_INTERRUPTS;
 
+	// Check button (115 times/second)
+    // 3.8 microsecond per check (2304 step for clock2)
+    REG_TM1D =	63261;		
+    REG_TM1CNT = TIMER_FREQUENCY_256 | TIMER_ENABLE | TIMER_INTERRUPTS;
 
 	// Infinite loop
 	for(;;);
