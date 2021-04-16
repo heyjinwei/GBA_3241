@@ -8,6 +8,7 @@ int userX = 10;
 int userY = 90;
 int enemyX = 220;
 int enemyY = 90;
+int gameState = 0;
 
 void checkbutton(void)
 {
@@ -27,6 +28,7 @@ void checkbutton(void)
     }
     if ((buttons & KEY_START) == KEY_START)
     {
+        buttonS();
     }
     if ((buttons & KEY_RIGHT) == KEY_RIGHT)
     {
@@ -46,40 +48,57 @@ void checkbutton(void)
     }
 }
 
+void buttonS(void)
+{
+    if (gameState == 0){
+        gameState = 1;
+        delMenu();
+    }
+}
+
 void buttonR(void) //move right
-{    
-     userX += 1;
-     if (userX > 104) { //if you try to move the man pass the middle,
-        userX -= 1;       
-     } 
-     return userX;
+{   
+    if (gameState == 1 ){
+        userX += 1;
+        if (userX > 104) { //if you try to move the man pass the middle,
+           userX -= 1;       
+        } 
+        return userX;
+    }
+    
 }
 
 void buttonL(void) //move left
 {
-    userX -= 1;
-    if (userX < 0) { //if you try to move the man out of the screen this prevents it
-        userX += 1;
+    if (gameState == 1 ){
+        userX -= 1;
+        if (userX < 0) { //if you try to move the man out of the screen this prevents it
+            userX += 1;
+        }
+        return userX;
     }
-    return userX; 
 }
 
 void buttonU(void) //move up
 {
-     userY -= 1;
-     if (userY < 0) { //if you try to move the man out of the screen this prevents it
-        userY += 1;       
-     } 
-     return userY;
+    if (gameState == 1 ){
+        userY -= 1;
+        if (userY < 0) { //if you try to move the man out of the screen this prevents it
+            userY += 1;       
+        } 
+        return userY;
+    }
 }
 
 void buttonD(void) //move down
 {
-     userY += 1;
-     if (userY > 144) { //if you try to move the man out of the screen this prevents it
-        userY -= 1;       
-     } 
-     return userY;
+    if (gameState == 1 ){
+        userY += 1;
+        if (userY > 144) { //if you try to move the man out of the screen this prevents it
+            userY -= 1;       
+        } 
+ return userY;
+    }
 }
 
 void fillPalette(void)
@@ -112,6 +131,22 @@ void drawSprite(int numb, int N, int x, int y)
     *(unsigned short *)(0x7000000 + 8*N) = y | 0x2000;
     *(unsigned short *)(0x7000002 + 8*N) = x | 0x4000;
     *(unsigned short *)(0x7000004 + 8*N) = numb*8;
+}
+
+
+void drawMenu(void)
+{
+    if (gameState==0)
+        drawSprite(25, 30, 100,120);
+        drawSprite(26, 31, 116,120);
+        drawSprite(27, 32, 132,120);
+}
+
+void delMenu(void)
+{
+    drawSprite(25, 30, 240,160);
+    drawSprite(26, 31, 240,160);
+    drawSprite(27, 32, 240,160);
 }
 
 /*
