@@ -56,6 +56,20 @@ void showHealthBar(void)
     }
 }
 
+void gameHandler(void)
+{
+    moveEnemy();
+    checkbutton();
+    drawSprite(0, 2, userX, userY);
+    drawSprite(1, 3, enemyX, enemyY);
+    if(gameState==1){
+        showHealthBar();
+        drawSprite(2, 4, 120, 40); //draw friendly rocket
+        drawSprite(3, 5, 120, 120); //draw enemy rocket
+    }
+        
+}
+
 void Handler(void)
 {
     REG_IME = 0x0; // Stop all other interrupt handling, while we handle this current one
@@ -65,23 +79,15 @@ void Handler(void)
         menuHandler();              
     }
     
-    if ((REG_IF & INT_TIMER0) == INT_TIMER0) // TODO: replace XXX with the specific interrupt you are handling
+    if ((REG_IF & INT_TIMER0) == INT_TIMER0) 
     {
-        moveEnemy();
-        checkbutton();
-        drawSprite(0, 2, userX, userY);
-        drawSprite(1, 3, enemyX, enemyY);
-        drawSprite(2, 4, 120, 40); //draw friendly rocket
-        drawSprite(3, 5, 120, 120); //draw enemy rocket
-        showHealthBar();
+        gameHandler();
     }
     if ((REG_IF & INT_TIMER1) == INT_TIMER1) 
     {
         
     }
-	
-
-    
+	    
     REG_IF = REG_IF; // Update interrupt table, to confirm we have handled this interrupt
     REG_IME = 0x1;  // Re-enable interrupt handling
 }
@@ -137,18 +143,16 @@ int main(void)
     // 60 FPS game
     // 16,666 microsecond per frame (273 step for clock4)
     REG_TM0D =	65261;		
-    REG_TM0CNT = TIMER_FREQUENCY_1024 | TIMER_ENABLE| TIMER_INTERRUPTS;// | TIMER_INTERRUPTS;
+    REG_TM0CNT = TIMER_FREQUENCY_1024 | TIMER_ENABLE| TIMER_INTERRUPTS;
 
 	// Check button (115 times/second)
     // 3.8 microsecond per check (2304 step for clock2)
-    REG_TM1D =	63261;		
-    REG_TM1CNT = TIMER_FREQUENCY_256 | TIMER_ENABLE| TIMER_INTERRUPTS;// | TIMER_INTERRUPTS;
-
-
-
+    REG_TM1D =	63261;
+    REG_TM1CNT = TIMER_FREQUENCY_256 | TIMER_ENABLE| TIMER_INTERRUPTS;
 
 	// Infinite loop
 	for(;;);
 	
 	return 0;
 }
+
