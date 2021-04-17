@@ -7,7 +7,10 @@
 int i;
 int j;
 int level = 1;
+
+//enemy movement variables
 bool isMovingUp = 0;
+
 
 int userHealth;
 int enemyHealth;
@@ -83,6 +86,7 @@ void menuHandler(void)
 
 void showHealthBar(void)
 {
+
     drawSprite(6, 6, 112, 0); 				// draw health bar separator
     for (i=1; i <= userHealth; i++) {		// draw user health
         drawSprite(4, 6 + i, 112 - (i * 16), 0);
@@ -98,20 +102,45 @@ void showHealthBar(void)
     }				
 }
 
+void drawUser(void)
+{
+	if (isShielded)
+	{
+		drawSprite(8, 2, userX, userY);
+	} else
+	{
+		drawSprite(0, 2, userX, userY);
+	}
+}
+
+void drawMidDivider(void)
+{
+	int y = 16;
+	int count = 0;
+	while (y <= 160)
+	{
+		drawSprite(9, 120 + count, 112, y);
+		++count;
+		y += 16;
+	}
+	
+}
 
 void gameHandler(void)
 {
     moveEnemy();
     checkbutton();
-    drawSprite(0, 2, userX, userY);
+    drawUser();
     drawSprite(1, 3, enemyX, enemyY);
     if(gameState==1)
     {
+    	drawMidDivider();
         showHealthBar();
         drawRockets();
     }
     else if(gameState==2)
     {
+    	drawSprite(11, 6, 112, 0); 				// draw health bar separator for win
     	gameState = 0;
     	// <Insert User wins details>
     	// Print win and go next lvl
@@ -119,6 +148,8 @@ void gameHandler(void)
     }
     else if(gameState==3)
     {
+    	showHealthBar();
+    	drawSprite(10, 6, 112, 0); 				// draw health bar separator for lose
     	gameState = 0;
     	// <Insert Game Over details>
     	// Print game over
@@ -129,7 +160,13 @@ void gameHandler(void)
 
 void userDamaged(void)
 {
-	userHealth--;
+	if (isShielded)
+	{
+		userHealth--;
+	} else
+	{
+		userHealth -= 2;
+	}
 	if(userHealth < 0)
 	{
 		gameState = 3; //Game over
@@ -188,7 +225,6 @@ void drawRockets(void)
 		}		
 	}
 }
-
 
 void enemyHandler(void)
 {
