@@ -71,6 +71,11 @@ void moveEnemy(void)
     }
 }
 
+void gameOver(void)
+{
+	gameState = 3;
+	drawGameOver();
+}
 
 void menuHandler(void)
 {
@@ -119,7 +124,7 @@ void gameHandler(void)
     }
     else if(gameState==3)
     {
-    	gameState = 0;
+    	gameOver();
     	// <Insert Game Over details>
     	// Print game over
     	// Go back to menu (gameState = 0)

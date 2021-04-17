@@ -168,6 +168,14 @@ void drawSprite(int numb, int N, int x, int y)
     *(unsigned short *)(0x7000004 + 8*N) = numb*8;
 }
 
+void drawGameOver(void)
+{
+    drawSprite(28, 33, 84, 80);
+    drawSprite(29, 34, 100, 80);
+    drawSprite(30, 35, 124, 80);
+    drawSprite(31, 36, 140, 80);
+}
+
 
 void drawMenu(void)
 {
