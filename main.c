@@ -48,21 +48,20 @@ void menuHandler(void)
 void showHealthBar(void)
 {
     drawSprite(6, 6, 112, 0); // draw health bar separato
-    for (i=1; i <= userHealth; i++)
-    {
+    for (i=1; i <= userHealth; i++) {
         drawSprite(4, 6 + i, 112 - (i * 16), 0);
     }
-    for( ; i <= 7; i++) 
-    {
-        drawSprite(7, 6 + i, 112 - (i * 16), 0);
-    }
-    for (i=1; i <= enemyHealth; i++)
-    {
+    drawDepletedHealth(i, 6); // draw depleted health for user
+    for (i=1; i <= enemyHealth; i++) {
         drawSprite(5, 13 + i, 112 + (i * 16), 0);
     }
-    for( ; i <= 7; i++) 
-    {
-        drawSprite(7, 13 + i, 112 - (i * 16), 0);
+    drawDepletedHealth(i, 13); // draw depleted health for enemy
+}
+
+void drawDepletedHealth(int i, int N)
+{
+    for( ; i <= 7; i++) {
+        drawSprite(7, N + i, 112 - (i * 16), 0);
     }
 }
 
@@ -93,7 +92,7 @@ void drawRockets(void)
 		userRocketX[j] += 3;
 		drawSprite(3, 100+j, userRocketX[j], userRocketY[j]);
 		if(userRocketX[j]>=237){
-			userRocketX[j] = 0;
+			userRocketX[j] = 0; 
 			userRocketY[j] = 160;
 		}
 	}
