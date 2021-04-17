@@ -8,33 +8,69 @@ int i;
 int j;
 int level = 1;
 bool isMovingUp = 0;
-int userHealth = 1;
-int enemyHealth = 7;
 
-int enemyRocketInd  = 0;
-int userRocketInd  = 0;
+int userHealth;
+int enemyHealth;
 
-int enemyRocketX[] = {240,240,240,240,240,240,240,240,240,240};
-int enemyRocketY[] = {160,160,160,160,160,160,160,160,160,160};
+int enemyRocketInd;
+int userRocketInd;
 
-int userRocketX[] = {0,0,0,0,0,0,0,0,0,0};
-int userRocketY[] = {160,160,160,160,160,160,160,160,160,160};
+int enemyRocketState[10];
+int enemyRocketX[10];
+int enemyRocketY[10];
+
+int userRocketState[10];
+int userRocketX[10];
+int userRocketY[10];
+
+
+// Function to initialize game parameter
+// Future dev: Add level, where each level has
+// different initialized parameter
+void gameInit(void)
+{
+	userHealth = 7;
+	enemyHealth = 7;
+	
+	enemyRocketInd  = 0;
+	userRocketInd  = 0;
+
+	for(i = 0; i < 10; i++) // Initialize rocket parameters
+	{
+		// To track the rocket's state
+		// State 0: Ready to be fired
+		// State 1: Travelling
+		enemyRocketState[i] = 0;
+		// Rocket's position 
+		enemyRocketX[i] = 240; 
+		enemyRocketY[i] = 160;
+
+		userRocketState[i] = 0;
+		userRocketX[i] = 0;
+		userRocketY[i] = 160;
+	}
+}
+
 
 void moveEnemy(void) 
 {
     if (level == 1) 
     {
-        if (enemyY < 144 && !isMovingUp) { //if you try to move the man out of the screen this prevents it
+        if (enemyY < 144 && !isMovingUp) 
+        { //if you try to move the man out of the screen this prevents it
             enemyY += 1;       
         }
-        if (enemyY > 16 && isMovingUp) { //if you try to move the man out of the screen this prevents it
+        if (enemyY > 16 && isMovingUp) 
+        { //if you try to move the man out of the screen this prevents it
             enemyY -= 1;       
         }
-        if (enemyY >= 144 || enemyY <= 16) {
+        if (enemyY >= 144 || enemyY <= 16) 
+        {
             isMovingUp = !isMovingUp;
         }
     }
 }
+
 
 void menuHandler(void)
 {
@@ -44,6 +80,7 @@ void menuHandler(void)
         checkbutton();
     }
 }
+
 
 void showHealthBar(void)
 {
@@ -65,63 +102,139 @@ void drawDepletedHealth(int i, int N)
     }
 }
 
+
 void gameHandler(void)
 {
     moveEnemy();
     checkbutton();
     drawSprite(0, 2, userX, userY);
     drawSprite(1, 3, enemyX, enemyY);
-    if(gameState==1){
+    if(gameState==1)
+    {
         showHealthBar();
-        //drawSprite(2, 4, 120, 40); //draw friendly rocket
-        //drawSprite(3, 5, 120, 120); //draw enemy rocket
         drawRockets();
+    }
+    else if(gameState==2)
+    {
+    	gameState = 0;
+    	// <Insert User wins details>
+    	// Print win and go next lvl
+    	// Next level can just change gameState==1 and change parameters (i.e. rocketspeed)
+    }
+    else if(gameState==3)
+    {
+    	gameState = 0;
+    	// <Insert Game Over details>
+    	// Print game over
+    	// Go back to menu (gameState = 0)
     }
 }
 
-void drawRockets(void)
-{	
-	for(j = 0; j<10; j++){
-		enemyRocketX[j] -= 3;
-		drawSprite(2, 80+j, enemyRocketX[j], enemyRocketY[j]);
 
-		if(enemyRocketX[j]<=3){
-			enemyRocketX[j] = 240;
-			enemyRocketY[j] = 160;
-		}
-		userRocketX[j] += 3;
-		drawSprite(3, 100+j, userRocketX[j], userRocketY[j]);
-		if(userRocketX[j]>=237){
-			userRocketX[j] = 0; 
-			userRocketY[j] = 160;
-		}
+void userDamaged(void)
+{
+	userHealth--;
+	if(userHealth < 0)
+	{
+		gameState = 3; //Game over
 	}
 }
+
+
+void enemyDamaged(void)
+{
+	enemyHealth--;
+	if(enemyHealth < 0)
+	{
+		gameState = 2; //User win
+	}
+}
+
+
+void drawRockets(void)
+{	
+	for(j = 0; j<10; j++) // Loop through all 10 available rockets
+	{
+		if(enemyRocketState[j] == 1) // If rocket is travelling
+		{
+			enemyRocketX[j] -= 3; // Travel speed
+			// Check if rocket collides with user
+			if(enemyRocketX[j]<=userX+5 && enemyRocketX[j]>=userX-5 && enemyRocketY[j]<=userY+10 && enemyRocketY[j]>=userY-5)
+			{
+				userDamaged(); // If collide, damage
+				enemyRocketState[j] = 0; // Rocket collided, back to state 0
+			}
+			// Check if rocket is going out of bound
+			if(enemyRocketX[j]<=3 || enemyRocketState[j]==0)
+			{
+				// If out of bound, reset and back to state 0
+				enemyRocketX[j] = 240;
+				enemyRocketY[j] = 160;
+				enemyRocketState[j] = 0;
+			}
+			drawSprite(2, 80+j, enemyRocketX[j], enemyRocketY[j]);
+		}
+		if(userRocketState[j] == 1) // Same thing but from user perspective
+		{
+			userRocketX[j] += 3;
+			if(userRocketX[j]<=enemyX+5 && userRocketX[j]>=enemyX-5 && userRocketY[j]<=enemyY+10 && userRocketY[j]>=enemyY-5)
+			{
+				enemyDamaged();
+				userRocketState[j] = 0;
+			}
+			if(userRocketX[j]>=237 || userRocketState[j]==0 )
+			{
+				userRocketX[j] = 0;
+				userRocketY[j] = 160;
+				userRocketState[j] = 0;
+			}
+			drawSprite(3, 100+j, userRocketX[j], userRocketY[j]);
+		}		
+	}
+}
+
 
 void enemyHandler(void)
 {
-	if(gameState == 1){
-		enemyRocketInd++;
-		if (enemyRocketInd==10){
-			enemyRocketInd = 1;
+	if(gameState == 1) // If game is ongoing
+	{
+		if (enemyRocketInd==10) // Check if the rocket index is going out of bound
+		{
+			// If looped through all 10 rockets, go back to the first one
+			// as it is most probably ready to be used again
+			enemyRocketInd = 0;
 		}
-		enemyRocketX[enemyRocketInd-1] = enemyX-10;
-		enemyRocketY[enemyRocketInd-1] = enemyY-5;
+		// Check if the rocket is ready to be used
+		if(enemyRocketState[enemyRocketInd]==0)
+		{
+			// If it is, fire it
+			enemyRocketState[enemyRocketInd] = 1; // State changes from idle to travelling
+			enemyRocketX[enemyRocketInd] = enemyX-10; // Fire from the agent's location
+			enemyRocketY[enemyRocketInd] = enemyY-5;
+		}		
+		enemyRocketInd++;
 	}
 }
 
+
 void userHandler(void)
 {
-	if(gameState==1){
-		userRocketInd++;
-		if (userRocketInd==10){
-			userRocketInd = 1;
+	if(gameState==1)
+	{
+		if (userRocketInd==10)
+		{
+			userRocketInd = 0;
 		}
-		userRocketX[userRocketInd-1] = userX+10;
-		userRocketY[userRocketInd-1] = userY-5;
+		if(userRocketState[userRocketInd]==0)
+		{
+			userRocketState[userRocketInd] = 1;
+			userRocketX[userRocketInd] = userX+10;
+			userRocketY[userRocketInd] = userY-5;
+		}		
+		userRocketInd++;
 	}
-	
 }
+
 
 void Handler(void)
 {
@@ -140,11 +253,11 @@ void Handler(void)
     {
     	bufferButtonA = 0;
         enemyHandler();
-    }
-	    
+    }  
     REG_IF = REG_IF; // Update interrupt table, to confirm we have handled this interrupt
     REG_IME = 0x1;  // Re-enable interrupt handling
 }
+
 
 // -----------------------------------------------------------------------------
 // Project Entry Point
