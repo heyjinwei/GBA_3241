@@ -81,25 +81,21 @@ void menuHandler(void)
     }
 }
 
-
 void showHealthBar(void)
 {
-    drawSprite(6, 6, 112, 0); // draw health bar separato
-    for (i=1; i <= userHealth; i++) {
+    drawSprite(6, 6, 112, 0); 				// draw health bar separator
+    for (i=1; i <= userHealth; i++) {		// draw user health
         drawSprite(4, 6 + i, 112 - (i * 16), 0);
     }
-    drawDepletedHealth(i, 6); // draw depleted health for user
-    for (i=1; i <= enemyHealth; i++) {
+    for( ; i <= 7; i++) { 					// draw depleted health for user
+        drawSprite(7, 6 + i, 112 - (i * 16), 0);
+    }
+    for (i=1; i <= enemyHealth; i++) {		//draw enemy health
         drawSprite(5, 13 + i, 112 + (i * 16), 0);
     }
-    drawDepletedHealth(i, 13); // draw depleted health for enemy
-}
-
-void drawDepletedHealth(int i, int N)
-{
-    for( ; i <= 7; i++) {
-        drawSprite(7, N + i, 112 - (i * 16), 0);
-    }
+    for( ; i <= 7; i++) { 					// draw depleted health for enemy
+        drawSprite(7, 13 + i, 112 + (i * 16), 0);
+    }				
 }
 
 
