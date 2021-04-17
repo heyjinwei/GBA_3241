@@ -83,13 +83,16 @@ void gameHandler(void)
 void drawRockets(void)
 {	
 	for(j = 0; j<10; j++){
-		drawSprite(2, 80+j, enemyRocketX[j]--, enemyRocketY[j]);
-		if(enemyRocketX[j]==0){
+		enemyRocketX[j] -= 3;
+		drawSprite(2, 80+j, enemyRocketX[j], enemyRocketY[j]);
+
+		if(enemyRocketX[j]<=3){
 			enemyRocketX[j] = 240;
 			enemyRocketY[j] = 160;
 		}
-		drawSprite(3, 100+j, userRocketX[j]++, userRocketY[j]);
-		if(userRocketX[j]==240){
+		userRocketX[j] += 3;
+		drawSprite(3, 100+j, userRocketX[j], userRocketY[j]);
+		if(userRocketX[j]>=237){
 			userRocketX[j] = 0;
 			userRocketY[j] = 160;
 		}
