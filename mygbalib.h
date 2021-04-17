@@ -10,16 +10,16 @@ int userY = 90;
 int enemyX = 220;
 int enemyY = 90;
 int gameState = 0;
-
+int bufferButtonA = 0;
 void checkbutton(void)
 {
 	// Gift function to show you how a function that can be called upon button interrupt 
     // to detect which button was pressed and run a specific function for each button could
     // look like. You would have to define each buttonA/buttonB/... function yourself.
-    u16 buttons = INPUT;
-    
+    u16 buttons = INPUT;    
     if ((buttons & KEY_A) == KEY_A)
     {
+        buttonA();
     }
     if ((buttons & KEY_B) == KEY_B)
     {
@@ -46,6 +46,17 @@ void checkbutton(void)
     if ((buttons & KEY_DOWN) == KEY_DOWN)
     {
         buttonD();
+    }
+}
+
+void buttonA(void)
+{
+    if (gameState == 1)
+    {
+        if(bufferButtonA==0){
+            bufferButtonA = 1;
+            userHandler();    
+        }
     }
 }
 
