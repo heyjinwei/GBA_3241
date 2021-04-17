@@ -103,7 +103,6 @@ void buttonR(void) //move right
     }
 }
 
-
 void buttonL(void) //move left
 {
     if (gameState == 1 )
@@ -114,7 +113,6 @@ void buttonL(void) //move left
        }
     }
 }
-
 
 void buttonU(void) //move up
 {

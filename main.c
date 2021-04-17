@@ -6,7 +6,7 @@
 
 int i;
 int j;
-int level = 1;
+int level = 2;
 
 //enemy special variables
 bool isMovingUp = 0;
@@ -131,6 +131,18 @@ void drawUser(void)
 	}
 }
 
+void drawEnemy(void)
+{
+	if (level == 1)
+	{
+		drawSprite(1, 3, enemyX, enemyY);
+	} else if (level == 2)
+	{
+		drawSprite(12, 3, enemyX, enemyY);
+	}
+	
+}
+
 void drawMidDivider(void)
 {
 	int y = 16;
@@ -140,8 +152,7 @@ void drawMidDivider(void)
 		drawSprite(9, 120 + count, 112, y);
 		++count;
 		y += 16;
-	}
-	
+	}	
 }
 
 void gameHandler(void)
@@ -149,7 +160,7 @@ void gameHandler(void)
     moveEnemy();
     checkbutton();
     drawUser();
-    drawSprite(1, 3, enemyX, enemyY);
+    drawEnemy();
     if(gameState==1)
     {
     	drawMidDivider();
@@ -187,7 +198,6 @@ void gameHandler(void)
     }
 }
 
-
 void userDamaged(void)
 {
 	if (isShielded)
@@ -203,10 +213,9 @@ void userDamaged(void)
 	}
 }
 
-
 void enemyDamaged(void)
 {
-	enemyHealth -= 2;
+	enemyHealth--;
 	if(enemyHealth < 0)
 	{
 		gameState = 2; //User win
@@ -235,6 +244,17 @@ void moveEnemyRockets(int j)
 	}
 }
 
+void drawEnemyRocket(int j)
+{
+	if (level == 1)
+	{
+		drawSprite(2, 80+j, enemyRocketX[j], enemyRocketY[j]);
+	} else if (level == 2)
+	{
+		drawSprite(13, 80+j, enemyRocketX[j], enemyRocketY[j]);
+	}
+}
+
 void drawRockets(void)
 {	
 	for(j = 0; j<10; j++) // Loop through all 10 available rockets
@@ -256,7 +276,8 @@ void drawRockets(void)
 				enemyRocketY[j] = 160;
 				enemyRocketState[j] = 0;
 			}
-			drawSprite(2, 80+j, enemyRocketX[j], enemyRocketY[j]);
+			drawEnemyRocket(j);
+			
 		}
 		if(userRocketState[j] == 1) // Same thing but from user perspective
 		{
