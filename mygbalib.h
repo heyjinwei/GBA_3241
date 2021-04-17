@@ -14,8 +14,10 @@ int enemyY = 90;
 int gameState = 0;
 
 // To debounce button A in gameState 1
-int bufferButtonA = 0; 
+int bufferButtonA = 0;
 
+// Should be a boolean
+int isShielded = 0;
 
 void checkbutton(void)
 {
@@ -23,13 +25,7 @@ void checkbutton(void)
     // to detect which button was pressed and run a specific function for each button could
     // look like. You would have to define each buttonA/buttonB/... function yourself.
     u16 buttons = INPUT;    
-    if ((buttons & KEY_A) == KEY_A)
-    {
-        buttonA();
-    }
-    if ((buttons & KEY_B) == KEY_B)
-    {
-    }
+    checkButtonBThenA(buttons);
     if ((buttons & KEY_SELECT) == KEY_SELECT)
     {
     }
@@ -55,6 +51,19 @@ void checkbutton(void)
     }
 }
 
+void checkButtonBThenA(u16 buttons) // Check if button B is pressed then checks A. Both cannot be on at the same time.
+{
+    if ((buttons & KEY_B) == KEY_B)
+    {
+        isShielded = 1; // while button is pressed, shield is on
+        return;
+    } else if ((buttons & KEY_A) == KEY_A)
+    {
+        buttonA();
+    }
+    isShielded = 0;
+}
+
 
 void buttonA(void) // When button A is pressed
 {
@@ -69,7 +78,6 @@ void buttonA(void) // When button A is pressed
         }
     }
 }
-
 
 void buttonS(void)
 {
