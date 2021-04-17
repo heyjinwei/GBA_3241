@@ -8,9 +8,9 @@ int i;
 int j;
 int level = 1;
 
-//enemy movement variables
+//enemy special variables
 bool isMovingUp = 0;
-
+int teleportTimer = 0;
 
 int userHealth;
 int enemyHealth;
@@ -54,6 +54,10 @@ void gameInit(void)
 	}
 }
 
+int generateRandomInt(int high, int low)
+{
+	return (rand() % (high - low + 1)) + low;
+}
 
 void moveEnemy(void) 
 {
@@ -71,6 +75,15 @@ void moveEnemy(void)
         {
             isMovingUp = !isMovingUp;
         }
+    } else if (level == 2)
+    {
+    	teleportTimer++;
+    	if(teleportTimer >= 100) 
+    	{
+    		enemyX = generateRandomInt(224, 128);
+    		enemyY = generateRandomInt(144, 16);
+    		teleportTimer = 0;
+    	}
     }
 }
 
@@ -145,8 +158,18 @@ void gameHandler(void)
     }
     else if(gameState==2)
     {
+    	showHealthBar();
     	drawSprite(11, 6, 112, 0); 				// draw health bar separator for win
-    	gameState = 0;
+    	if (++level <= 2)
+    	{
+    		gameInit();
+    		gameState = 1;
+    	} else
+    	{
+    		gameState = 0;
+    		gameOver();
+    	}
+    	
     	// <Insert User wins details>
     	// Print win and go next lvl
     	// Next level can just change gameState==1 and change parameters (i.e. rocketspeed)
@@ -183,13 +206,34 @@ void userDamaged(void)
 
 void enemyDamaged(void)
 {
-	enemyHealth--;
+	enemyHealth -= 2;
 	if(enemyHealth < 0)
 	{
 		gameState = 2; //User win
 	}
 }
 
+void moveEnemyRockets(int j)
+{
+	
+	if (level == 1)
+	{
+		enemyRocketX[j] -= 3; // Travel speed
+	} else if (level == 2)
+	{
+		enemyRocketX[j] -= 2; // Travel speed
+		if (teleportTimer % 2)
+		{
+			if (enemyRocketY[j] > userY) 
+			{
+				enemyRocketY[j]--;
+			} else if (enemyRocketY[j] < userY)
+			{
+				enemyRocketY[j]++;
+			}
+		}
+	}
+}
 
 void drawRockets(void)
 {	
@@ -197,7 +241,7 @@ void drawRockets(void)
 	{
 		if(enemyRocketState[j] == 1) // If rocket is travelling
 		{
-			enemyRocketX[j] -= 3; // Travel speed
+			moveEnemyRockets(j);
 			// Check if rocket collides with user
 			if(enemyRocketX[j]<=userX+5 && enemyRocketX[j]>=userX-5 && enemyRocketY[j]<=userY+10 && enemyRocketY[j]>=userY-5)
 			{
