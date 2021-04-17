@@ -1,16 +1,22 @@
 #include "sprites.h"
 #define INPUT                      (KEY_MASK & (~REG_KEYS))
-/*
-#define SCREEN_WIDTH         240
-#define SCREEN_HEIGHT        160
-*/
 
 int userX = 10;
 int userY = 90;
 int enemyX = 220;
 int enemyY = 90;
+
+// Game state is to track the state of the game
+// gameState 0: Menu
+// gameState 1: In-game
+// gameState 2: User win
+// gameState 3: Game over
 int gameState = 0;
-int bufferButtonA = 0;
+
+// To debounce button A in gameState 1
+int bufferButtonA = 0; 
+
+
 void checkbutton(void)
 {
 	// Gift function to show you how a function that can be called upon button interrupt 
@@ -49,83 +55,108 @@ void checkbutton(void)
     }
 }
 
-void buttonA(void)
+
+void buttonA(void) // When button A is pressed
 {
-    if (gameState == 1)
+    if (gameState == 1) // Double confirm the gamestate
     {
-        if(bufferButtonA==0){
+        // Only do at the moment the button is pressed
+        // holding the button does not trigger multiple times
+        if(bufferButtonA==0) 
+        {
             bufferButtonA = 1;
             userHandler();    
         }
     }
 }
 
+
 void buttonS(void)
 {
     if (gameState == 0)
     {
+        // From menu to start game
         gameState = 1;
+        // Initialize game parameter
+        gameInit();
         delMenu();
     }
 }
 
+
 void buttonR(void) //move right
 {   
-    if (gameState == 1 ){
-        if (userX < 104) { //move right if not in middle
+    if (gameState == 1 )
+    {
+        if (userX < 104) //move right if not in middle
+        { 
             userX += 1;
         }
     }
 }
 
+
 void buttonL(void) //move left
 {
-    if (gameState == 1 ){
-        if (userX > 0) { //move left if not out of screen
+    if (gameState == 1 )
+    {
+        if (userX > 0) //move left if not out of screen
+        { 
             userX -= 1;
        }
     }
 }
 
+
 void buttonU(void) //move up
 {
-    if (gameState == 1 ){
-        if (userY > 16) { //move up if below max height
+    if (gameState == 1 )
+    {
+        if (userY > 16) //move up if below max height
+        { 
             userY -= 1;      
         } 
     }
 }
 
+
 void buttonD(void) //move down
 {
-    if (gameState == 1 ){
-        if (userY < 144) { //move down if above minimum height
+    if (gameState == 1 )
+    {
+        if (userY < 144) //move down if above minimum height
+        { 
             userY += 1;      
         } 
     }
 }
 
+
 void fillPalette(void)
 {
     int     i;
-
 	// Fill the palette in GBA memory
     for (i = 0; i < NCOLS; i++)
+    {
         spritePal[i] = palette[i];
+    }
 }
 
 
 void fillSprites(void)
 {
     int     i;
-
 	// Load all sprites in GBA memory
     for (i = 0; i < 128*16*16; i++)
+    {
         spriteData[i] = (sprites[i*2+1] << 8) + sprites[i*2];
+    }
 
 	// draw all sprites on screen, but all of them outside of the screen (starting at position (240,160) the bottom right corner of the GBA screen)
     for(i = 0; i < 128; i++)
+    {
         drawSprite(0, i, 240,160);
+    }
 }
 
 
@@ -140,13 +171,15 @@ void drawSprite(int numb, int N, int x, int y)
 
 void drawMenu(void)
 {
-    if (gameState==0){
+    if (gameState==0)
+    {
         drawSprite(25, 30, 100,120);
         drawSprite(26, 31, 116,120);
         drawSprite(27, 32, 132,120);
     }
         
 }
+
 
 void delMenu(void)
 {
