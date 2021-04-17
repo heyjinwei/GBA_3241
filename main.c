@@ -8,15 +8,17 @@ int i;
 int j;
 int level = 1;
 bool isMovingUp = 0;
-int userHealth = 1;
+int userHealth = 7;
 int enemyHealth = 7;
 
 int enemyRocketInd  = 0;
 int userRocketInd  = 0;
 
+int enemyRocketState[] = {0,0,0,0,0,0,0,0,0,0};
 int enemyRocketX[] = {240,240,240,240,240,240,240,240,240,240};
 int enemyRocketY[] = {160,160,160,160,160,160,160,160,160,160};
 
+int userRocketState[] = {0,0,0,0,0,0,0,0,0,0};
 int userRocketX[] = {0,0,0,0,0,0,0,0,0,0};
 int userRocketY[] = {160,160,160,160,160,160,160,160,160,160};
 
@@ -74,52 +76,95 @@ void gameHandler(void)
     drawSprite(1, 3, enemyX, enemyY);
     if(gameState==1){
         showHealthBar();
-        //drawSprite(2, 4, 120, 40); //draw friendly rocket
-        //drawSprite(3, 5, 120, 120); //draw enemy rocket
         drawRockets();
+    }else if(gameState==2){
+    	gameState = 0;
+    	// <Insert User wins details>
+    	// Print win and go next lvl
+    	// Next level can just change gameState==1 and change parameters (i.e. rocketspeed)
+    }else if(gameState==3){
+    	gameState = 0;
+    	// <Insert Game Over details>
+    	// Print game over
+    	// Go back to menu (gameState = 0)
     }
+}
+
+void userDamaged(void)
+{
+	userHealth--;
+	if(userHealth < 0){
+		gameState = 3; //Game over
+	}
+}
+
+void enemyDamaged(void)
+{
+	enemyHealth--;
+	if(enemyHealth < 0){
+		gameState = 2; //User win
+	}
 }
 
 void drawRockets(void)
 {	
 	for(j = 0; j<10; j++){
-		enemyRocketX[j] -= 3;
-		drawSprite(2, 80+j, enemyRocketX[j], enemyRocketY[j]);
-
-		if(enemyRocketX[j]<=3){
-			enemyRocketX[j] = 240;
-			enemyRocketY[j] = 160;
+		if(enemyRocketState[j] == 1){
+			enemyRocketX[j] -= 3;
+			if(enemyRocketX[j]<=userX+5 && enemyRocketX[j]>=userX-5 && enemyRocketY[j]<=userY+10 && enemyRocketY[j]>=userY-5){
+				userDamaged();
+				enemyRocketState[j] = 0;
+			}
+			if(enemyRocketX[j]<=3 || enemyRocketState[j]==0){
+				enemyRocketX[j] = 240;
+				enemyRocketY[j] = 160;
+				enemyRocketState[j] = 0;
+			}
+			drawSprite(2, 80+j, enemyRocketX[j], enemyRocketY[j]);
 		}
-		userRocketX[j] += 3;
-		drawSprite(3, 100+j, userRocketX[j], userRocketY[j]);
-		if(userRocketX[j]>=237){
-			userRocketX[j] = 0;
-			userRocketY[j] = 160;
-		}
+		if(userRocketState[j] == 1){
+			userRocketX[j] += 3;
+			if(userRocketX[j]<=enemyX+5 && userRocketX[j]>=enemyX-5 && userRocketY[j]<=enemyY+10 && userRocketY[j]>=enemyY-5){
+				enemyDamaged();
+				userRocketState[j] = 0;
+			}
+			if(userRocketX[j]>=237 || userRocketState[j]==0 ){
+				userRocketX[j] = 0;
+				userRocketY[j] = 160;
+				userRocketState[j] = 0;
+			}
+			drawSprite(3, 100+j, userRocketX[j], userRocketY[j]);
+		}		
 	}
 }
 
 void enemyHandler(void)
 {
 	if(gameState == 1){
-		enemyRocketInd++;
 		if (enemyRocketInd==10){
-			enemyRocketInd = 1;
+			enemyRocketInd = 0;
 		}
-		enemyRocketX[enemyRocketInd-1] = enemyX-10;
-		enemyRocketY[enemyRocketInd-1] = enemyY-5;
+		if(enemyRocketState[enemyRocketInd]==0){
+			enemyRocketState[enemyRocketInd] = 1;
+			enemyRocketX[enemyRocketInd] = enemyX-10;
+			enemyRocketY[enemyRocketInd] = enemyY-5;
+		}		
+		enemyRocketInd++;
 	}
 }
 
 void userHandler(void)
 {
 	if(gameState==1){
-		userRocketInd++;
 		if (userRocketInd==10){
-			userRocketInd = 1;
+			userRocketInd = 0;
 		}
-		userRocketX[userRocketInd-1] = userX+10;
-		userRocketY[userRocketInd-1] = userY-5;
+		if(userRocketState[userRocketInd]==0){
+			userRocketState[userRocketInd] = 1;
+			userRocketX[userRocketInd] = userX+10;
+			userRocketY[userRocketInd] = userY-5;
+		}		
+		userRocketInd++;
 	}
 	
 }
