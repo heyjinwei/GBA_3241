@@ -5,11 +5,20 @@
 #include <mygba.h>
 
 int i;
-
+int j;
 int level = 1;
 bool isMovingUp = 0;
 int userHealth = 1;
 int enemyHealth = 7;
+
+int enemyRocketInd  = 0;
+int userRocketInd  = 0;
+
+int enemyRocketX[] = {240,240,240,240,240,240,240,240,240,240};
+int enemyRocketY[] = {160,160,160,160,160,160,160,160,160,160};
+
+int userRocketX[] = {0,0,0,0,0,0,0,0,0,0};
+int userRocketY[] = {160,160,160,160,160,160,160,160,160,160};
 
 void moveEnemy(void) 
 {
@@ -29,7 +38,8 @@ void moveEnemy(void)
 
 void menuHandler(void)
 {
-    if (gameState == 0){
+    if (gameState == 0)
+    {
         drawMenu();
         checkbutton();
     }
@@ -64,10 +74,51 @@ void gameHandler(void)
     drawSprite(1, 3, enemyX, enemyY);
     if(gameState==1){
         showHealthBar();
-        drawSprite(2, 4, 120, 40); //draw friendly rocket
-        drawSprite(3, 5, 120, 120); //draw enemy rocket
+        //drawSprite(2, 4, 120, 40); //draw friendly rocket
+        //drawSprite(3, 5, 120, 120); //draw enemy rocket
+        drawRockets();
     }
-        
+}
+
+void drawRockets(void)
+{	
+	for(j = 0; j<10; j++){
+		drawSprite(2, 80+j, enemyRocketX[j]--, enemyRocketY[j]);
+		if(enemyRocketX[j]==0){
+			enemyRocketX[j] = 240;
+			enemyRocketY[j] = 160;
+		}
+		drawSprite(3, 100+j, userRocketX[j]++, userRocketY[j]);
+		if(userRocketX[j]==240){
+			userRocketX[j] = 0;
+			userRocketY[j] = 160;
+		}
+	}
+}
+
+void enemyHandler(void)
+{
+	if(gameState == 1){
+		enemyRocketInd++;
+		if (enemyRocketInd==10){
+			enemyRocketInd = 1;
+		}
+		enemyRocketX[enemyRocketInd-1] = enemyX-10;
+		enemyRocketY[enemyRocketInd-1] = enemyY-5;
+	}
+}
+
+void userHandler(void)
+{
+	if(gameState==1){
+		userRocketInd++;
+		if (userRocketInd==10){
+			userRocketInd = 1;
+		}
+		userRocketX[userRocketInd-1] = userX+10;
+		userRocketY[userRocketInd-1] = userY-5;
+	}
+	
 }
 
 void Handler(void)
@@ -85,7 +136,8 @@ void Handler(void)
     }
     if ((REG_IF & INT_TIMER1) == INT_TIMER1) 
     {
-        
+    	bufferButtonA = 0;
+        enemyHandler();
     }
 	    
     REG_IF = REG_IF; // Update interrupt table, to confirm we have handled this interrupt
@@ -99,30 +151,15 @@ int main(void)
 {
 	// Initialize HAMlib
 	ham_Init();
-	//int i;
+
 	// Set background mode
 	ham_SetBgMode(2);
 
-	//ham_LoadBGPal((void*)bg_Palette, 256);
-
-	// Initialize built-in Text-System
-	// ham_InitText(0);
-
-	// Draw some text
-	/*
-	ham_DrawText(4, 1, "SNAKEE");
-	for (i = 0; i < 10; i++)
-		ham_DrawText(4, i, "SNAKEE");
-	*/
-
 	fillPalette();
 	fillSprites();
-
-	//drawSprite(0, 1, 40, 40);
-    //drawSprite(1, 2, 160, 40);
+	
 	// Set Handler Function for interrupts and enable selected interrupts
-	// REG_IME = 0x0;
-    REG_INT = (int)&Handler;
+	REG_INT = (int)&Handler;
     REG_IE  = INT_TIMER0 | INT_TIMER1 | INT_TIMER2;
     REG_IME = 0x1;		// Enable interrupt handling
     
@@ -140,15 +177,20 @@ int main(void)
     REG_TM2D =  53261;      
     REG_TM2CNT = TIMER_FREQUENCY_256 | TIMER_ENABLE | TIMER_INTERRUPTS;
 
-    // 60 FPS game
+    // Set 60 FPS game and check for user control
     // 16,666 microsecond per frame (273 step for clock4)
     REG_TM0D =	65261;		
     REG_TM0CNT = TIMER_FREQUENCY_1024 | TIMER_ENABLE| TIMER_INTERRUPTS;
 
-	// Check button (115 times/second)
-    // 3.8 microsecond per check (2304 step for clock2)
-    REG_TM1D =	63261;
-    REG_TM1CNT = TIMER_FREQUENCY_256 | TIMER_ENABLE| TIMER_INTERRUPTS;
+	// Game logic for enemy (0.5 time/second)
+    // 32772 step for clock4
+    REG_TM1D =	32763;
+    REG_TM1CNT = TIMER_FREQUENCY_1024 | TIMER_ENABLE | TIMER_INTERRUPTS;
+
+    // Game logic for user (0.5 time/second)
+    // 32772 step for clock4
+    REG_TM1D =	32763;
+    REG_TM1CNT = TIMER_FREQUENCY_1024 | TIMER_ENABLE | TIMER_INTERRUPTS;
 
 	// Infinite loop
 	for(;;);
