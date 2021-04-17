@@ -74,6 +74,11 @@ void moveEnemy(void)
     }
 }
 
+void gameOver(void)
+{
+	gameState = 3;
+	drawGameOver();
+}
 
 void menuHandler(void)
 {
@@ -151,6 +156,8 @@ void gameHandler(void)
     	showHealthBar();
     	drawSprite(10, 6, 112, 0); 				// draw health bar separator for lose
     	gameState = 0;
+    	gameOver();
+
     	// <Insert Game Over details>
     	// Print game over
     	// Go back to menu (gameState = 0)
