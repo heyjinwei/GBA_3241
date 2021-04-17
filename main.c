@@ -89,7 +89,7 @@ void moveEnemy(void)
 
 void gameOver(void)
 {
-	gameState = 3;
+	//gameState = 3;
 	drawGameOver();
 }
 
@@ -97,12 +97,12 @@ void menuHandler(void)
 {
     if (gameState == 0)
     {
-        drawMenu();
-        checkbutton();
+    		drawMenu();
+        	checkbutton();        
     }
 }
 
-void showHealthBar(void)
+void showHealthBar(void) 
 {
 
     drawSprite(6, 6, 112, 0); 				// draw health bar separator
@@ -133,7 +133,7 @@ void drawUser(void)
 
 void drawMidDivider(void)
 {
-	int y = 16;
+	int y = 16;   
 	int count = 0;
 	while (y <= 160)
 	{
@@ -178,7 +178,7 @@ void gameHandler(void)
     {
     	showHealthBar();
     	drawSprite(10, 6, 112, 0); 				// draw health bar separator for lose
-    	gameState = 0;
+    	//gameState = 0;
     	gameOver();
 
     	// <Insert Game Over details>
@@ -214,8 +214,7 @@ void enemyDamaged(void)
 }
 
 void moveEnemyRockets(int j)
-{
-	
+{	
 	if (level == 1)
 	{
 		enemyRocketX[j] -= 3; // Travel speed
@@ -340,8 +339,7 @@ void Handler(void)
     REG_IF = REG_IF; // Update interrupt table, to confirm we have handled this interrupt
     REG_IME = 0x1;  // Re-enable interrupt handling
 }
-
-
+ 
 // -----------------------------------------------------------------------------
 // Project Entry Point
 // -----------------------------------------------------------------------------
