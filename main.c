@@ -6,7 +6,7 @@
 
 int i;
 int j;
-int level;
+
 
 //enemy special variables
 bool isMovingUp = 0;
@@ -158,46 +158,37 @@ void drawMidDivider(void)
 	}	
 }
 
-void gameHandler(void)
+void gameHandler(void) 
 {
-    moveEnemy();
+    
     checkbutton();
-    drawUser();
-    drawEnemy();
+	moveEnemy(); 
+    
     if (gameState==0)
     {
-    	resetSprites();
-    	drawMenu();
-        checkbutton();     
+    	//resetSprites();
+    	drawMenu();     
     }
     else if(gameState==1)
-    {
+    {	
+    	drawUser();
+    	drawEnemy();
     	drawMidDivider();
         showHealthBar();
         drawRockets();
     }
     else if(gameState==2)
-    {
-    	resetSprites();
+    { 
     	//rocketInit();
     	//drawRockets();
-    	showHealthBar();
-    	drawSprite(11, 6, 112, 0); 				// draw health bar separator for win
-    	if (++level <= 2)
-    	{
-    		gameInit();
-    		gameState = 1;
-    	} else
-    	{
-    		gameState = 0;
-    		// gameOver();
-    	}
+    	//showHealthBar(); 
+    	//drawSprite(11, 6, 112, 0); 				// draw health bar separator for win
+    	drawCongrats(); 
     }
     else if(gameState==3)
     {
     	//showHealthBar();
     	//drawSprite(10, 6, 112, 0); 				// draw health bar separator for lose
-    	resetSprites();
     	gameOver();
     	// <Insert Game Over details>
     	// Print game over
@@ -210,22 +201,26 @@ void userDamaged(void)
 	if (isShielded)
 	{
 		userHealth--;
-	} else
+	} 
+	else
 	{
 		userHealth -= 2;
 	}
+
 	if(userHealth < 0)
 	{
+		resetSprites();
 		gameState = 3; //Game over
 	}
 }
 
 void enemyDamaged(void)
 {
-	enemyHealth--;
+	enemyHealth--; 
 	if(enemyHealth < 0)
 	{
-		gameState = 2; //User win
+		resetSprites();
+		gameState = 2; //User win		
 	}
 }
 
@@ -234,7 +229,8 @@ void moveEnemyRockets(int j)
 	if (level == 1)
 	{
 		enemyRocketX[j] -= 3; // Travel speed
-	} else if (level == 2)
+	} 
+	else if (level == 2)
 	{
 		enemyRocketX[j] -= 2; // Travel speed
 		if (teleportTimer % 2)
@@ -242,7 +238,8 @@ void moveEnemyRockets(int j)
 			if (enemyRocketY[j] > userY) 
 			{
 				enemyRocketY[j]--;
-			} else if (enemyRocketY[j] < userY)
+			} 
+			else if (enemyRocketY[j] < userY)
 			{
 				enemyRocketY[j]++;
 			}
@@ -255,7 +252,8 @@ void drawEnemyRocket(int j)
 	if (level == 1)
 	{
 		drawSprite(2, 80+j, enemyRocketX[j], enemyRocketY[j]);
-	} else if (level == 2)
+	} 
+	else if (level == 2)
 	{
 		drawSprite(13, 80+j, enemyRocketX[j], enemyRocketY[j]);
 	}
@@ -358,6 +356,8 @@ void Handler(void)
     {
     	// Reset button availability every 0.5 second
     	bufferButtonA = 0;
+    	bufferButtonS = 0;
+
         enemyHandler();
     }  
     REG_IF = REG_IF; // Update interrupt table, to confirm we have handled this interrupt
@@ -377,6 +377,7 @@ int main(void)
 
 	fillPalette();
 	fillSprites();
+	resetSprites();
 	
 	// Set Handler Function for interrupts and enable selected interrupts
 	REG_INT = (int)&Handler;
