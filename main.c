@@ -3,14 +3,18 @@
 // -----------------------------------------------------------------------------
 #include "mygbalib.h"
 #include <mygba.h>
+#include <time.h>
+#include <stdlib.h>
+
+#define TELEPORT_TIME 100
 
 int i;
 int j;
-int level;
 
 //enemy special variables
 bool isMovingUp = 0;
-int teleportTimer;
+int teleportTimer = TELEPORT_TIME;
+int randomIntegers[50] = {223, 119, 182, 164, 214, 34, 60, 249, 254, 251, 114, 218, 132, 73, 17, 13, 120, 126, 7, 82, 175, 65, 163, 193, 127, 42, 151, 151, 168, 53, 132, 135, 172, 58, 43, 130, 93, 104, 124, 91, 99, 238, 54, 231, 55, 71, 244, 176, 198, 251};
 
 int userHealth;
 int enemyHealth;
@@ -68,9 +72,11 @@ void rocketInit(void)
 	}
 }
 
+
 int generateRandomInt(int high, int low)
 {
-	return (rand() % (high - low + 1)) + low;
+	int randomInt = (rand() % (high - low + 1)) + low;
+	return randomInt;
 }
 
 void moveEnemy(void) 
@@ -91,8 +97,8 @@ void moveEnemy(void)
         }
     } else if (level == 2)
     {
-    	teleportTimer++;
-    	if(teleportTimer >= 100) 
+    	teleportTimer += 2;
+    	if (teleportTimer >= TELEPORT_TIME) 
     	{
     		enemyX = generateRandomInt(224, 128);
     		enemyY = generateRandomInt(144, 16);
@@ -141,7 +147,14 @@ void drawEnemy(void)
 		drawSprite(1, 3, enemyX, enemyY);
 	} else if (level == 2)
 	{
-		drawSprite(12, 3, enemyX, enemyY);
+		if ((teleportTimer > (TELEPORT_TIME - 10)) || teleportTimer < 5)
+		{
+			drawSprite(14, 3, enemyX, enemyY);
+		} else
+		{
+			drawSprite(12, 3, enemyX, enemyY);
+		}
+		
 	}
 	
 }
@@ -158,46 +171,37 @@ void drawMidDivider(void)
 	}	
 }
 
-void gameHandler(void)
+void gameHandler(void) 
 {
-    moveEnemy();
+    
     checkbutton();
-    drawUser();
-    drawEnemy();
+	moveEnemy(); 
+    
     if (gameState==0)
     {
-    	resetSprites();
-    	drawMenu();
-        checkbutton();     
+    	//resetSprites();
+    	drawMenu();     
     }
     else if(gameState==1)
-    {
+    {	
+    	drawUser();
+    	drawEnemy();
     	drawMidDivider();
         showHealthBar();
         drawRockets();
     }
     else if(gameState==2)
-    {
-    	resetSprites();
+    { 
     	//rocketInit();
     	//drawRockets();
-    	showHealthBar();
-    	drawSprite(11, 6, 112, 0); 				// draw health bar separator for win
-    	if (++level <= 2)
-    	{
-    		gameInit();
-    		gameState = 1;
-    	} else
-    	{
-    		gameState = 0;
-    		// gameOver();
-    	}
+    	//showHealthBar(); 
+    	//drawSprite(11, 6, 112, 0); 				// draw health bar separator for win
+    	drawCongrats(); 
     }
     else if(gameState==3)
     {
     	//showHealthBar();
     	//drawSprite(10, 6, 112, 0); 				// draw health bar separator for lose
-    	resetSprites();
     	gameOver();
     	// <Insert Game Over details>
     	// Print game over
@@ -210,22 +214,26 @@ void userDamaged(void)
 	if (isShielded)
 	{
 		userHealth--;
-	} else
+	} 
+	else
 	{
 		userHealth -= 2;
 	}
+
 	if(userHealth < 0)
 	{
+		resetSprites();
 		gameState = 3; //Game over
 	}
 }
 
 void enemyDamaged(void)
 {
-	enemyHealth--;
+	enemyHealth--; 
 	if(enemyHealth < 0)
 	{
-		gameState = 2; //User win
+		resetSprites();
+		gameState = 2; //User win		
 	}
 }
 
@@ -234,7 +242,8 @@ void moveEnemyRockets(int j)
 	if (level == 1)
 	{
 		enemyRocketX[j] -= 3; // Travel speed
-	} else if (level == 2)
+	} 
+	else if (level == 2)
 	{
 		enemyRocketX[j] -= 2; // Travel speed
 		if (teleportTimer % 2)
@@ -242,7 +251,8 @@ void moveEnemyRockets(int j)
 			if (enemyRocketY[j] > userY) 
 			{
 				enemyRocketY[j]--;
-			} else if (enemyRocketY[j] < userY)
+			} 
+			else if (enemyRocketY[j] < userY)
 			{
 				enemyRocketY[j]++;
 			}
@@ -255,7 +265,8 @@ void drawEnemyRocket(int j)
 	if (level == 1)
 	{
 		drawSprite(2, 80+j, enemyRocketX[j], enemyRocketY[j]);
-	} else if (level == 2)
+	} 
+	else if (level == 2)
 	{
 		drawSprite(13, 80+j, enemyRocketX[j], enemyRocketY[j]);
 	}
@@ -358,6 +369,8 @@ void Handler(void)
     {
     	// Reset button availability every 0.5 second
     	bufferButtonA = 0;
+    	bufferButtonS = 0;
+
         enemyHandler();
     }  
     REG_IF = REG_IF; // Update interrupt table, to confirm we have handled this interrupt
@@ -377,6 +390,7 @@ int main(void)
 
 	fillPalette();
 	fillSprites();
+	resetSprites();
 	
 	// Set Handler Function for interrupts and enable selected interrupts
 	REG_INT = (int)&Handler;

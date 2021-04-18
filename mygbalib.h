@@ -6,6 +6,7 @@ int userY = 90;
 int enemyX = 220;
 int enemyY = 90;
 int fromGameOver = 0;
+int level;
 // Game state is to track the state of the game
 // gameState 0: Menu
 // gameState 1: In-game
@@ -15,6 +16,7 @@ int gameState = 0;
 
 // To debounce button A in gameState 1
 int bufferButtonA = 0;
+int bufferButtonS = 0;
 
 // Should be a boolean
 int isShielded = 0;
@@ -83,15 +85,33 @@ void buttonS(void)
 {
     if (gameState == 0)
     {
-        delMenu();
-        // Initialize game parameter
-        gameInit();
-        // From menu to start game
-        gameState = 1;
+        if(bufferButtonS == 0)
+        {
+            resetSprites();
+            // Initialize game parameter
+            gameInit();
+            // From menu to start game
+            gameState = 1;
+        }
+    }
+    else if (gameState == 2)
+    {
+        resetSprites();
+        if (++level <= 2)
+        {
+            gameInit();
+            gameState = 1;
+        } 
+        else
+        {
+            gameState = 0;
+            bufferButtonS = 1;
+            // gameOver();
+        }
     }
     else if (gameState == 3)
     {
-        delGameOver();
+        resetSprites();
         gameInit();
         gameState = 1;
     }
@@ -190,90 +210,111 @@ void drawSprite(int numb, int N, int x, int y)
     *(unsigned short *)(0x7000004 + 8*N) = numb*8;
 }
 
+
+void drawCongrats(void)
+{
+    resetSprites();
+    // CONGRATULATIONS!!
+    drawSprite(29, 48, 56, 50);
+    drawSprite(30, 49, 72, 50);
+    drawSprite(31, 50, 88, 50);
+    drawSprite(32, 51, 104, 50);
+    drawSprite(33, 52, 120, 50);
+    drawSprite(34, 53, 136, 50);
+    drawSprite(35, 54, 152, 50);
+    drawSprite(36, 55, 168, 50);
+
+    if(level < 2)
+    {  
+        // NEXT LVL
+        drawSprite(37, 56, 84, 120);
+        drawSprite(38, 57, 100, 120);
+        drawSprite(39, 58, 124, 120);
+        drawSprite(40, 59, 140, 120);
+        drawSprite(41, 60, 156, 120);
+    }
+    else
+    {
+        // MENU
+        drawSprite(42, 62, 104, 120);
+        drawSprite(43, 63, 120, 120);
+    }
+}
+
+
+void delCongrats(void)
+{
+    drawSprite(29, 48, 240,160);
+    drawSprite(30, 49, 240,160);
+    drawSprite(31, 50, 240,160);
+    drawSprite(32, 51, 240,160);
+    drawSprite(33, 52, 240,160);
+    drawSprite(34, 53, 240,160);
+    drawSprite(35, 54, 240,160);
+    drawSprite(36, 55, 240,160);
+}
+
+
 void drawGameOver(void)
 {
+    resetSprites();
     // GAME OVER
-    drawSprite(28, 33, 84, 50);
-    drawSprite(29, 34, 100, 50);
-    drawSprite(30, 35, 124, 50);
-    drawSprite(31, 36, 140, 50);
+    drawSprite(18, 33, 84, 50);
+    drawSprite(19, 34, 100, 50);
+    drawSprite(20, 35, 124, 50);
+    drawSprite(21, 36, 140, 50);
     // START AGAIN? 
-    drawSprite(25, 37, 76,120);
-    drawSprite(26, 38, 92,120);
-    drawSprite(27, 39, 108,120);
-    drawSprite(32, 40, 124,120);
-    drawSprite(33, 41, 140,120);
-    drawSprite(34, 42, 156,120);
+    drawSprite(15, 37, 76,120);
+    drawSprite(16, 38, 92,120);
+    drawSprite(17, 39, 108,120);
+    drawSprite(22, 40, 124,120);
+    drawSprite(23, 41, 140,120);
+    drawSprite(24, 42, 156,120);
 }
+
 
 void delGameOver(void)
 {
     // GAME OVER
-    drawSprite(28, 33, 240,160);
-    drawSprite(29, 34, 240,160);
-    drawSprite(30, 35, 240,160);
-    drawSprite(31, 36, 240,160);
+    drawSprite(18, 33, 240,160);
+    drawSprite(19, 34, 240,160);
+    drawSprite(20, 35, 240,160);
+    drawSprite(21, 36, 240,160);
     // START AGAIN? 
-    drawSprite(25, 37, 240,160);
-    drawSprite(26, 38, 240,160);
-    drawSprite(27, 39, 240,160);
-    drawSprite(32, 40, 240,160);
-    drawSprite(33, 41, 240,160);
-    drawSprite(34, 42, 240,160);
+    drawSprite(15, 37, 240,160);
+    drawSprite(16, 38, 240,160);
+    drawSprite(17, 39, 240,160);
+    drawSprite(22, 40, 240,160);
+    drawSprite(23, 41, 240,160);
+    drawSprite(24, 42, 240,160);
 }
+
 
 void drawMenu(void)
 {
-    if (gameState==0)
-    {
-        // SHOOT!
-        drawSprite(35, 43, 69,50);
-        drawSprite(36, 44, 90,50);
-        drawSprite(37, 45, 111,50);
-        drawSprite(37, 46, 132,50);
-        drawSprite(38, 47, 153,50);
-        // START
-        drawSprite(25, 30, 100,120);
-        drawSprite(26, 31, 116,120);
-        drawSprite(27, 32, 132,120);
-    }
-        
+    resetSprites();
+    // SHOOT!
+    drawSprite(25, 43, 69,50);
+    drawSprite(26, 44, 90,50);
+    drawSprite(27, 45, 111,50);
+    drawSprite(27, 46, 132,50);
+    drawSprite(28, 47, 153,50);
+    // START
+    drawSprite(15, 30, 100,120);
+    drawSprite(16, 31, 116,120);
+    drawSprite(17, 32, 132,120);
 }
 
 
 void delMenu(void)
 {
-    drawSprite(35, 43, 240,160);
-    drawSprite(36, 44, 240,160);
-    drawSprite(37, 45, 240,160);
-    drawSprite(37, 46, 240,160);
-    drawSprite(38, 47, 240,160);
-    drawSprite(25, 30, 240,160);
-    drawSprite(26, 31, 240,160);
-    drawSprite(27, 32, 240,160);
+    drawSprite(25, 43, 240,160);
+    drawSprite(26, 44, 240,160);
+    drawSprite(27, 45, 240,160);
+    drawSprite(27, 46, 240,160);
+    drawSprite(28, 47, 240,160);
+    drawSprite(15, 30, 240,160);
+    drawSprite(16, 31, 240,160);
+    drawSprite(17, 32, 240,160);
 }
 
-/*
-void drawLaser(void)
-{
-	// Gift function showing you how to draw an example sprite defined in sprite.h on screen, using drawSprite()
-	// Note that this code uses largeer sprites with a palette, so the main code needs to be initialized in graphical mode 2, using:
-    //		*(unsigned short *) 0x4000000 = 0x40 | 0x2 | 0x1000;
-	// at the beginning of main() in main.c
-
-    switch(lPlat) {
-        case 16:
-        {
-            drawSprite(LASER, NPLATS*3 + 5 + NROCK + NMET, LaserX, LaserY);
-            break;
-        }
-        case 9:
-        {
-            drawSprite(LASER, NPLATS*2 + 5 + NROCK + NMET, LaserX, LaserY);
-            break;
-        }
-        default:
-            break;
-    }
-}
-*/
