@@ -6,11 +6,11 @@
 
 int i;
 int j;
-int level = 2;
+int level;
 
 //enemy special variables
 bool isMovingUp = 0;
-int teleportTimer = 0;
+int teleportTimer;
 
 int userHealth;
 int enemyHealth;
@@ -32,12 +32,26 @@ int userRocketY[10];
 // different initialized parameter
 void gameInit(void)
 {
+	userX = 10;
+	userY = 90;
+	enemyX = 220;
+	enemyY = 90;	
+	if(gameState != 2)
+	{
+		level = 1;
+	}
 	userHealth = 7;
-	enemyHealth = 7;
+	enemyHealth = 1;
+	teleportTimer = 0;
 	
 	enemyRocketInd  = 0;
 	userRocketInd  = 0;
 
+	rocketInit();
+}
+
+void rocketInit(void)
+{
 	for(i = 0; i < 10; i++) // Initialize rocket parameters
 	{
 		// To track the rocket's state
@@ -89,22 +103,11 @@ void moveEnemy(void)
 
 void gameOver(void)
 {
-	//gameState = 3;
 	drawGameOver();
-}
-
-void menuHandler(void)
-{
-    if (gameState == 0)
-    {
-    		drawMenu();
-        	checkbutton();        
-    }
 }
 
 void showHealthBar(void) 
 {
-
     drawSprite(6, 6, 112, 0); 				// draw health bar separator
     for (i=1; i <= userHealth; i++) {		// draw user health
         drawSprite(4, 6 + i, 112 - (i * 16), 0);
@@ -161,7 +164,13 @@ void gameHandler(void)
     checkbutton();
     drawUser();
     drawEnemy();
-    if(gameState==1)
+    if (gameState==0)
+    {
+    	resetSprites();
+    	drawMenu();
+        checkbutton();     
+    }
+    else if(gameState==1)
     {
     	drawMidDivider();
         showHealthBar();
@@ -169,6 +178,9 @@ void gameHandler(void)
     }
     else if(gameState==2)
     {
+    	resetSprites();
+    	//rocketInit();
+    	//drawRockets();
     	showHealthBar();
     	drawSprite(11, 6, 112, 0); 				// draw health bar separator for win
     	if (++level <= 2)
@@ -178,20 +190,15 @@ void gameHandler(void)
     	} else
     	{
     		gameState = 0;
-    		gameOver();
+    		// gameOver();
     	}
-    	
-    	// <Insert User wins details>
-    	// Print win and go next lvl
-    	// Next level can just change gameState==1 and change parameters (i.e. rocketspeed)
     }
     else if(gameState==3)
     {
-    	showHealthBar();
-    	drawSprite(10, 6, 112, 0); 				// draw health bar separator for lose
-    	//gameState = 0;
+    	//showHealthBar();
+    	//drawSprite(10, 6, 112, 0); 				// draw health bar separator for lose
+    	resetSprites();
     	gameOver();
-
     	// <Insert Game Over details>
     	// Print game over
     	// Go back to menu (gameState = 0)
@@ -342,11 +349,6 @@ void userHandler(void)
 void Handler(void)
 {
     REG_IME = 0x0; // Stop all other interrupt handling, while we handle this current one
-
-    if ((REG_IF & INT_TIMER2) == INT_TIMER2)
-    {
-        menuHandler();              
-    }
     
     if ((REG_IF & INT_TIMER0) == INT_TIMER0) 
     {
@@ -354,6 +356,7 @@ void Handler(void)
     }
     if ((REG_IF & INT_TIMER1) == INT_TIMER1) 
     {
+    	// Reset button availability every 0.5 second
     	bufferButtonA = 0;
         enemyHandler();
     }  
@@ -389,22 +392,12 @@ int main(void)
 	clock 4: 61.025 microsec
     */
 
-    // Check start (115 times/second)
-    // 3.8 microsecond per check (2304 step for clock2)
-    REG_TM2D =  53261;      
-    REG_TM2CNT = TIMER_FREQUENCY_256 | TIMER_ENABLE | TIMER_INTERRUPTS;
-
     // Set 60 FPS game and check for user control
     // 16,666 microsecond per frame (273 step for clock4)
     REG_TM0D =	65261;		
     REG_TM0CNT = TIMER_FREQUENCY_1024 | TIMER_ENABLE| TIMER_INTERRUPTS;
 
 	// Game logic for enemy (0.5 time/second)
-    // 32772 step for clock4
-    REG_TM1D =	32763;
-    REG_TM1CNT = TIMER_FREQUENCY_1024 | TIMER_ENABLE | TIMER_INTERRUPTS;
-
-    // Game logic for user (0.5 time/second)
     // 32772 step for clock4
     REG_TM1D =	32763;
     REG_TM1CNT = TIMER_FREQUENCY_1024 | TIMER_ENABLE | TIMER_INTERRUPTS;
