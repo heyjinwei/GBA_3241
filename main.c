@@ -3,14 +3,18 @@
 // -----------------------------------------------------------------------------
 #include "mygbalib.h"
 #include <mygba.h>
+#include <time.h>
+#include <stdlib.h>
+
+#define TELEPORT_TIME 100
 
 int i;
 int j;
 
-
 //enemy special variables
 bool isMovingUp = 0;
-int teleportTimer;
+int teleportTimer = TELEPORT_TIME;
+int randomIntegers[50] = {223, 119, 182, 164, 214, 34, 60, 249, 254, 251, 114, 218, 132, 73, 17, 13, 120, 126, 7, 82, 175, 65, 163, 193, 127, 42, 151, 151, 168, 53, 132, 135, 172, 58, 43, 130, 93, 104, 124, 91, 99, 238, 54, 231, 55, 71, 244, 176, 198, 251};
 
 int userHealth;
 int enemyHealth;
@@ -68,9 +72,11 @@ void rocketInit(void)
 	}
 }
 
+
 int generateRandomInt(int high, int low)
 {
-	return (rand() % (high - low + 1)) + low;
+	int randomInt = (rand() % (high - low + 1)) + low;
+	return randomInt;
 }
 
 void moveEnemy(void) 
@@ -91,8 +97,8 @@ void moveEnemy(void)
         }
     } else if (level == 2)
     {
-    	teleportTimer++;
-    	if(teleportTimer >= 100) 
+    	teleportTimer += 2;
+    	if (teleportTimer >= TELEPORT_TIME) 
     	{
     		enemyX = generateRandomInt(224, 128);
     		enemyY = generateRandomInt(144, 16);
@@ -141,7 +147,14 @@ void drawEnemy(void)
 		drawSprite(1, 3, enemyX, enemyY);
 	} else if (level == 2)
 	{
-		drawSprite(12, 3, enemyX, enemyY);
+		if ((teleportTimer > (TELEPORT_TIME - 10)) || teleportTimer < 5)
+		{
+			drawSprite(14, 3, enemyX, enemyY);
+		} else
+		{
+			drawSprite(12, 3, enemyX, enemyY);
+		}
+		
 	}
 	
 }
