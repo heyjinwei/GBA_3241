@@ -83,11 +83,11 @@ void buttonS(void)
 {
     if (gameState == 0)
     {
-        // From menu to start game
-        gameState = 1;
+        delMenu();
         // Initialize game parameter
         gameInit();
-        delMenu();
+        // From menu to start game
+        gameState = 1;
     }
     else if (gameState == 3)
     {
@@ -95,7 +95,6 @@ void buttonS(void)
         gameInit();
         gameState = 1;
     }
-
 }
 
 
@@ -172,6 +171,16 @@ void fillSprites(void)
     }
 }
 
+// draw all sprites on screen, but all of them outside of the screen (starting at position (240,160) the bottom right corner of the GBA screen)
+void resetSprites(void)
+{
+    int i = 0;
+    for(i = 0; i < 128; i++)
+    {
+        drawSprite(0, i, 240,160);
+    }
+}
+
 
 void drawSprite(int numb, int N, int x, int y)
 {
@@ -195,7 +204,6 @@ void drawGameOver(void)
     drawSprite(32, 40, 124,120);
     drawSprite(33, 41, 140,120);
     drawSprite(34, 42, 156,120);
-    
 }
 
 void delGameOver(void)
