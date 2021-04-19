@@ -122,7 +122,7 @@ void buttonR(void) //move right
 {   
     if (gameState == 1 )
     {
-        if (userX < 104) //move right if not in middle
+        if (userX < 96) //move right if not in middle
         { 
             userX += 1;
         }
