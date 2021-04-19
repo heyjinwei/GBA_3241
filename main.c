@@ -6,7 +6,7 @@
 #include <time.h>
 #include <stdlib.h>
 
-#define TELEPORT_TIME 125
+#define TELEPORT_TIME 150
 
 int i;
 int j;
@@ -30,7 +30,6 @@ int userRocketState[10];
 int userRocketX[10];
 int userRocketY[10];
 
-
 // Function to initialize game parameter
 // Future dev: Add level, where each level has
 // different initialized parameter
@@ -45,7 +44,7 @@ void gameInit(void)
 		level = 1;
 	}
 	userHealth = 7;
-	enemyHealth = 0;
+	enemyHealth = 7;
 	teleportTimer = 0;
 	
 	enemyRocketInd  = 0;
