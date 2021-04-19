@@ -7,6 +7,7 @@ int enemyX = 220;
 int enemyY = 90;
 int fromGameOver = 0;
 int level;
+
 // Game state is to track the state of the game
 // gameState 0: Menu
 // gameState 1: In-game
@@ -88,6 +89,7 @@ void buttonS(void)
         if(bufferButtonS == 0)
         {
             resetSprites();
+            level = 1;
             // Initialize game parameter
             gameInit();
             // From menu to start game
@@ -214,7 +216,6 @@ void drawSprite(int numb, int N, int x, int y)
 void drawCongrats(void)
 {
     delMidDivider();
-    // resetSprites();
     // CONGRATULATIONS!!
     drawSprite(29, 48, 56, 50);
     drawSprite(30, 49, 72, 50);
@@ -243,23 +244,9 @@ void drawCongrats(void)
 }
 
 
-void delCongrats(void)
-{
-    drawSprite(29, 48, 240,160);
-    drawSprite(30, 49, 240,160);
-    drawSprite(31, 50, 240,160);
-    drawSprite(32, 51, 240,160);
-    drawSprite(33, 52, 240,160);
-    drawSprite(34, 53, 240,160);
-    drawSprite(35, 54, 240,160);
-    drawSprite(36, 55, 240,160);
-}
-
-
 void drawGameOver(void)
 {
     delMidDivider();
-    // resetSprites();
     // GAME OVER
     drawSprite(18, 33, 84, 50);
     drawSprite(19, 34, 100, 50);
@@ -272,23 +259,6 @@ void drawGameOver(void)
     drawSprite(22, 40, 124,120);
     drawSprite(23, 41, 140,120);
     drawSprite(24, 42, 156,120);
-}
-
-
-void delGameOver(void)
-{
-    // GAME OVER
-    drawSprite(18, 33, 240,160);
-    drawSprite(19, 34, 240,160);
-    drawSprite(20, 35, 240,160);
-    drawSprite(21, 36, 240,160);
-    // START AGAIN? 
-    drawSprite(15, 37, 240,160);
-    drawSprite(16, 38, 240,160);
-    drawSprite(17, 39, 240,160);
-    drawSprite(22, 40, 240,160);
-    drawSprite(23, 41, 240,160);
-    drawSprite(24, 42, 240,160);
 }
 
 
@@ -305,18 +275,5 @@ void drawMenu(void)
     drawSprite(15, 30, 100,120);
     drawSprite(16, 31, 116,120);
     drawSprite(17, 32, 132,120);
-}
-
-
-void delMenu(void)
-{
-    drawSprite(25, 43, 240,160);
-    drawSprite(26, 44, 240,160);
-    drawSprite(27, 45, 240,160);
-    drawSprite(27, 46, 240,160);
-    drawSprite(28, 47, 240,160);
-    drawSprite(15, 30, 240,160);
-    drawSprite(16, 31, 240,160);
-    drawSprite(17, 32, 240,160);
 }
 
