@@ -69,7 +69,7 @@ Can you defeat them all?
 
 #### Fire Magician
 
-- Difficulty: 3.5/5
+- Difficulty: 4/5
 - Teleports
 - Fireballs track you
 
