@@ -12,3 +12,13 @@ A GameBoy Advance game developed with the [HAM IDE and compiler](https://en.wiki
 
 ### Prerequisites
 
+### Controls
+
+Joypad Button | Description
+------------ | -------------
+Up | Move up
+Down | Move down
+Left | Move left
+Right | Move right
+A | Fire Rocket
+B | Activate Shield
