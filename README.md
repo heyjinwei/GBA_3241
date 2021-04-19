@@ -57,7 +57,7 @@ B | Activate Shield
 ### Game Flow
 
 <p align="center">
-  <img src="image/flow.png" width="900" />
+  <img src="image/gameflow.png" width="900" />
 </p>
 
 ### Architecture
