@@ -6,7 +6,7 @@
 #include <time.h>
 #include <stdlib.h>
 
-#define TELEPORT_TIME 350
+#define TELEPORT_TIME 300
 
 int i;
 int j;
@@ -46,8 +46,9 @@ void gameInit(void)
 		level = 1;
 	}
 	userHealth = 7;
-	enemyHealth = 0;
+	enemyHealth = 7;
 	teleportTimer = 0;
+    teleportCount = 0;
 	
 	enemyRocketInd  = 0;
 	userRocketInd  = 0;
@@ -110,12 +111,12 @@ void moveEnemy(void)
             teleportAndShoot();
     		teleportCount++;
     	}
-        if (teleportTimer == (TELEPORT_TIME - 50) && teleportCount < 2)
+        else if (teleportTimer == (TELEPORT_TIME - 50) && teleportCount < 2)
         {
             teleportAndShoot();
             teleportCount++;
         }
-        if (teleportTimer >= TELEPORT_TIME)
+        else if (teleportTimer >= TELEPORT_TIME)
         {
             teleportAndShoot();
             teleportTimer = 0;
