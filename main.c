@@ -6,14 +6,15 @@
 #include <time.h>
 #include <stdlib.h>
 
-#define TELEPORT_TIME 150
+#define TELEPORT_TIME 300
 
 int i;
 int j;
 
 //enemy special variables
 bool isMovingUp = 0;
-int teleportTimer = TELEPORT_TIME;
+int teleportTimer = 0;
+int teleportCount = 0;
 int randomIntegers[50] = {223, 119, 182, 164, 214, 34, 60, 249, 254, 251, 114, 218, 132, 73, 17, 13, 120, 126, 7, 82, 175, 65, 163, 193, 127, 42, 151, 151, 168, 53, 132, 135, 172, 58, 43, 130, 93, 104, 124, 91, 99, 238, 54, 231, 55, 71, 244, 176, 198, 251};
 
 int userHealth;
@@ -46,6 +47,7 @@ void gameInit(void)
 	userHealth = 7;
 	enemyHealth = 7;
 	teleportTimer = 0;
+    teleportCount = 0;
 	
 	enemyRocketInd  = 0;
 	userRocketInd  = 0;
@@ -78,6 +80,13 @@ int generateRandomInt(int high, int low)
 	return randomInt;
 }
 
+void teleportAndShoot(void)
+{
+    enemyX = generateRandomInt(224, 128);
+    enemyY = generateRandomInt(144, 16);
+    enemyHandler();
+}
+
 void moveEnemy(void) 
 {
     if (level == 1) 
@@ -85,8 +94,7 @@ void moveEnemy(void)
         if (enemyY < 144 && !isMovingUp) 
         { //if you try to move the man out of the screen this prevents it
             enemyY += 1;       
-        }
-        if (enemyY > 16 && isMovingUp) 
+        } else if (enemyY > 16 && isMovingUp) 
         { //if you try to move the man out of the screen this prevents it
             enemyY -= 1;       
         }
@@ -97,13 +105,22 @@ void moveEnemy(void)
     } else if (level == 2)
     {
     	teleportTimer++;
-    	if (teleportTimer >= TELEPORT_TIME) 
+    	if (teleportTimer >= (TELEPORT_TIME - 100) && teleportCount < 1)
     	{
-    		enemyX = generateRandomInt(224, 128);
-    		enemyY = generateRandomInt(144, 16);
-    		teleportTimer = 0;
-  			enemyHandler();
+            teleportAndShoot();
+    		teleportCount++;
     	}
+        else if (teleportTimer == (TELEPORT_TIME - 50) && teleportCount < 2)
+        {
+            teleportAndShoot();
+            teleportCount++;
+        }
+        else if (teleportTimer >= TELEPORT_TIME)
+        {
+            teleportAndShoot();
+            teleportTimer = 0;
+            teleportCount = 0;
+        }
     }
 }
 
