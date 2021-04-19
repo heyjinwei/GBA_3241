@@ -55,6 +55,28 @@ B | Activate Shield
 
 Rockets can only be fired when available and when the shield is not activated. 
 
+### Enemies to Defeat
+
+Can you defeat them all?
+
+#### Evil Twin
+
+- Difficulty: 1/5
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/66822038/115262915-8af5cc80-a167-11eb-8354-02db433d05bc.png" width="500" />
+</p>
+
+#### Fire Magician
+
+- Difficulty: 3.5/5
+- Teleports
+- Fireballs track you
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/66822038/115262956-96e18e80-a167-11eb-9b77-eee5167781f6.png" width="500" />
+</p>
+
 ## Development
 
 ### Game Flow
@@ -84,26 +106,3 @@ Button logic & sprites displaying
 `sprites.h`
 
 Sprites & palette
-
-### Enemies to Defeat
-
-Can you defeat them all?
-
-#### Evil Twin
-
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/66822038/115262915-8af5cc80-a167-11eb-8354-02db433d05bc.png" width="500" />
-</p>
-
-- Difficulty: 1/5
-- No special abilities
-
-#### Fire Magician
-
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/66822038/115262956-96e18e80-a167-11eb-9b77-eee5167781f6.png" width="500" />
-</p>
-
-- Difficulty: 3.5/5
-- Teleports
-- Fireballs track you
