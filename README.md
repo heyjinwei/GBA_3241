@@ -10,6 +10,7 @@ A GameBoy Advance game developed with the [HAM IDE and compiler](https://en.wiki
 
 ## Getting Started
 
+Download the [latest release](https://github.com/kheyang/GBA_3241/releases) or make your own GBA ROM file by following the steps below.
 
 The development of this project was done on [HAM 2.70](https://www.cameronjtinker.com/posts/gba-development-with-ham-271-sdk-for-windows), which can be downloaded from the embedded URL.
 
@@ -35,11 +36,11 @@ Then, the GBA ROM file will be available for use. Simply open the file in the em
   <img src="image/menu.png" width="500" />
 </p>
 
-Press button S to start the game!
+Press the START button to start the game!
 
 ### Objective
 
-SHOOT the enemy and don't get SHOT! Dodge the attack or shield it to receive reduced damages! To win the game, beat the enemies in both stages!
+SHOOT the enemy and don't get SHOT! Dodge the attack or shield it to reduce the damage received! To win the game, beat the enemies in both stages!
 
 ### Controls
 
@@ -51,6 +52,8 @@ Left | Move left
 Right | Move right
 A | Fire Rocket
 B | Activate Shield
+
+Rockets can only be fired when available and when the shield is not activated. 
 
 ## Development
 
@@ -81,3 +84,26 @@ Button logic & sprites displaying
 `sprites.h`
 
 Sprites & palette
+
+### Enemies to Defeat
+
+Can you defeat them all?
+
+#### Evil Twin
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/66822038/115262915-8af5cc80-a167-11eb-8354-02db433d05bc.png" width="500" />
+</p>
+
+- Difficulty: 1/5
+- No special abilities
+
+#### Fire Magician
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/66822038/115262956-96e18e80-a167-11eb-9b77-eee5167781f6.png" width="500" />
+</p>
+
+- Difficulty: 3.5/5
+- Teleports
+- Fireballs track you
