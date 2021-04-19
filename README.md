@@ -32,7 +32,7 @@ Then, the GBA ROM file will be available for use. Simply open the file in the em
 ## Playing the Game
 
 <p align="center">
-  <img src="image/menu.png" width="300" />
+  <img src="image/menu.png" width="500" />
 </p>
 
 Press button S to start the game!
@@ -57,7 +57,7 @@ B | Activate Shield
 ### Game Flow
 
 <p align="center">
-  <img src="image/flow.png" width="300" />
+  <img src="image/flow.png" width="900" />
 </p>
 
 ### Architecture
