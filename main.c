@@ -177,7 +177,7 @@ void drawEnemy(void)
 		drawSprite(1, 3, enemyX, enemyY);
 	} else if (level == 2)
 	{
-		if ((teleportTimer > (TELEPORT_TIME - 20)) || teleportTimer < 10)
+		if ((teleportTimer > (TELEPORT_TIME - 150)) || teleportTimer < 50)
 		{
 			drawSprite(14, 3, enemyX, enemyY);
 		} else
