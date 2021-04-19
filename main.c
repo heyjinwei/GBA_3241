@@ -39,11 +39,8 @@ void gameInit(void)
 	userX = 10;
 	userY = 90;
 	enemyX = 220;
-	enemyY = 90;	
-	if(gameState != 2)
-	{
-		level = 1;
-	}
+	enemyY = 90;
+
 	userHealth = 7;
 	enemyHealth = 7;
 	teleportTimer = 0;
@@ -132,14 +129,12 @@ void drawEndgame(void)
 	{
 		drawSprite(10, 6, 112, 0); 				// draw health bar separator for lose
 		drawEnemy();
-		//drawSprite(44, 2, userX, userY);		// draw user ashes
 	} else
 	{
 		drawSprite(11, 6, 112, 0); 				// draw health bar separator for win
 		drawUser();
-		//drawSprite(44, 3, enemyX, enemyY);		// draw enemy ashes
 	}
-	// drawMidDivider();
+
 }
 
 void showHealthBar(void) 
