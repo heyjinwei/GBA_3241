@@ -213,7 +213,8 @@ void drawSprite(int numb, int N, int x, int y)
 
 void drawCongrats(void)
 {
-    resetSprites();
+    delMidDivider();
+    // resetSprites();
     // CONGRATULATIONS!!
     drawSprite(29, 48, 56, 50);
     drawSprite(30, 49, 72, 50);
@@ -257,7 +258,8 @@ void delCongrats(void)
 
 void drawGameOver(void)
 {
-    resetSprites();
+    delMidDivider();
+    // resetSprites();
     // GAME OVER
     drawSprite(18, 33, 84, 50);
     drawSprite(19, 34, 100, 50);

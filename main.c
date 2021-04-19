@@ -45,7 +45,7 @@ void gameInit(void)
 		level = 1;
 	}
 	userHealth = 7;
-	enemyHealth = 7;
+	enemyHealth = 0;
 	teleportTimer = 0;
 	
 	enemyRocketInd  = 0;
@@ -110,6 +110,7 @@ void moveEnemy(void)
 
 void drawEndgame(void)
 {
+	delMidDivider();
 	showHealthBar();
 	if (gameState == 3)
 	{
@@ -122,7 +123,7 @@ void drawEndgame(void)
 		drawUser();
 		//drawSprite(44, 3, enemyX, enemyY);		// draw enemy ashes
 	}
-	drawMidDivider();
+	// drawMidDivider();
 }
 
 void showHealthBar(void) 
@@ -179,6 +180,18 @@ void drawMidDivider(void)
 	while (y <= 160)
 	{
 		drawSprite(9, 120 + count, 112, y);
+		++count;
+		y += 16;
+	}	
+}
+
+void delMidDivider(void)
+{
+	int y = 16;   
+	int count = 0;
+	while (y <= 160)
+	{
+		drawSprite(9, 120 + count, 240, 160);
 		++count;
 		y += 16;
 	}	
