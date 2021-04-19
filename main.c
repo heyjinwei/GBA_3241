@@ -6,7 +6,7 @@
 #include <time.h>
 #include <stdlib.h>
 
-#define TELEPORT_TIME 100
+#define TELEPORT_TIME 125
 
 int i;
 int j;
@@ -45,7 +45,7 @@ void gameInit(void)
 		level = 1;
 	}
 	userHealth = 7;
-	enemyHealth = 1;
+	enemyHealth = 7;
 	teleportTimer = 0;
 	
 	enemyRocketInd  = 0;
@@ -97,19 +97,32 @@ void moveEnemy(void)
         }
     } else if (level == 2)
     {
-    	teleportTimer += 2;
+    	teleportTimer++;
     	if (teleportTimer >= TELEPORT_TIME) 
     	{
     		enemyX = generateRandomInt(224, 128);
     		enemyY = generateRandomInt(144, 16);
     		teleportTimer = 0;
+  			enemyHandler();
     	}
     }
 }
 
-void gameOver(void)
+void drawEndgame(void)
 {
-	drawGameOver();
+	showHealthBar();
+	if (gameState == 3)
+	{
+		drawSprite(10, 6, 112, 0); 				// draw health bar separator for lose
+		drawEnemy();
+		//drawSprite(44, 2, userX, userY);		// draw user ashes
+	} else
+	{
+		drawSprite(11, 6, 112, 0); 				// draw health bar separator for win
+		drawUser();
+		//drawSprite(44, 3, enemyX, enemyY);		// draw enemy ashes
+	}
+	drawMidDivider();
 }
 
 void showHealthBar(void) 
@@ -147,7 +160,7 @@ void drawEnemy(void)
 		drawSprite(1, 3, enemyX, enemyY);
 	} else if (level == 2)
 	{
-		if ((teleportTimer > (TELEPORT_TIME - 10)) || teleportTimer < 5)
+		if ((teleportTimer > (TELEPORT_TIME - 20)) || teleportTimer < 10)
 		{
 			drawSprite(14, 3, enemyX, enemyY);
 		} else
@@ -179,7 +192,6 @@ void gameHandler(void)
     
     if (gameState==0)
     {
-    	//resetSprites();
     	drawMenu();     
     }
     else if(gameState==1)
@@ -192,20 +204,13 @@ void gameHandler(void)
     }
     else if(gameState==2)
     { 
-    	//rocketInit();
-    	//drawRockets();
-    	//showHealthBar(); 
-    	//drawSprite(11, 6, 112, 0); 				// draw health bar separator for win
-    	drawCongrats(); 
+    	drawCongrats();
+    	drawEndgame(); 
     }
     else if(gameState==3)
     {
-    	//showHealthBar();
-    	//drawSprite(10, 6, 112, 0); 				// draw health bar separator for lose
-    	gameOver();
-    	// <Insert Game Over details>
-    	// Print game over
-    	// Go back to menu (gameState = 0)
+    	drawGameOver();
+    	drawEndgame();
     }
 }
 
